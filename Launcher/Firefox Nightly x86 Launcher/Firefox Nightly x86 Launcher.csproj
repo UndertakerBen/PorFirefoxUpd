@@ -47,7 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Firefox Launcher 32Bit Nightly gray.ico</ApplicationIcon>
+    <ApplicationIcon>Firefox Launcher 32Bit Nightly.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
