@@ -27,7 +27,7 @@ namespace Firefox_Launcher
                 this.Close();
             }
         }
-        private void RadioButton1_CheckedChanged(object sender, System.EventArgs e)
+        private void RadioButton1_MouseClick(object sender, MouseEventArgs e)
         {
             MessageBox.Show("Warnung\n\nDiese Option ist nicht Empfohlen\n\nDie Commandline Option \"-allow-downgrade\" wird angefügt\n\nDer Herabstufungsschutz von Firefox 67 verhindert das versehentliche Starten von Firefox in einem Profil, in dem eine spätere Version von Firefox läuft. Je nach den Änderungen zwischen den beiden Versionen sind einige Dateien in einem Profil möglicherweise nicht abwärtskompatibel. Durch das Hinzufügen dieser Option wird der Herabstufungsschutz umgangen.", "Firefox Launcher", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }

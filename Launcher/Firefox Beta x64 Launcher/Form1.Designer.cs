@@ -62,6 +62,7 @@
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.TabStop = true;
             this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioButton1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.RadioButton1_MouseClick);
             // 
             // Form1
             // 

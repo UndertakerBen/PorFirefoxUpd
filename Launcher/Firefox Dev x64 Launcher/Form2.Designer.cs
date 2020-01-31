@@ -78,7 +78,7 @@
             this.radioButton1.TabStop = true;
             this.radioButton1.Text = "Use one profile for all versions";
             this.radioButton1.UseVisualStyleBackColor = true;
-            this.radioButton1.CheckedChanged += new System.EventHandler(this.RadioButton1_CheckedChanged);
+            this.radioButton1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.RadioButton1_MouseClick);
             // 
             // Form2
             // 
