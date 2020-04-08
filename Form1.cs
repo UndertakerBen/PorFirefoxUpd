@@ -133,12 +133,12 @@ namespace Firefox_2_test
                     }
                 }
             }
+            CheckUpdate();
         }
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboIndex = comboBox1.SelectedIndex;
         }
-
         private async void Button1_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
@@ -147,7 +147,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(0, 10, 0, 1, 12, 13, 1);
+                await NewMethod1(0, 10, 0, 1, 12, 13, 1);
             }
         }
         private async void Button2_Click(object sender, EventArgs e)
@@ -158,7 +158,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(0, 10, 1, 1, 12, 13, 2);
+                await NewMethod1(0, 10, 1, 1, 12, 13, 2);
             }
         }
         private async void Button3_Click(object sender, EventArgs e)
@@ -169,7 +169,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(0, 10, 2, 1, 12, 13, 3);
+                await NewMethod1(0, 10, 2, 1, 12, 13, 3);
             }
         }
         private async void Button4_Click(object sender, EventArgs e)
@@ -180,7 +180,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(0, 10, 3, 1, 12, 13, 4);
+                await NewMethod1(0, 10, 3, 1, 12, 13, 4);
             }
         }
         private async void Button5_Click(object sender, EventArgs e)
@@ -191,7 +191,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(0, 10, 4, 1, 12, 13, 5);
+                await NewMethod1(0, 10, 4, 1, 12, 13, 5);
             }
         }
         private async void Button6_Click(object sender, EventArgs e)
@@ -202,7 +202,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(1, 10, 5, 1, 12, 13, 6);
+                await NewMethod1(1, 10, 5, 1, 12, 13, 6);
             }
         }
         private async void Button7_Click(object sender, EventArgs e)
@@ -213,7 +213,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(1, 10, 6, 1, 12, 13, 7);
+                await NewMethod1(1, 10, 6, 1, 12, 13, 7);
             }
         }
         private async void Button8_Click(object sender, EventArgs e)
@@ -224,7 +224,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(1, 10, 7, 1, 12, 13, 8);
+                await NewMethod1(1, 10, 7, 1, 12, 13, 8);
             }
         }
         private async void Button9_Click(object sender, EventArgs e)
@@ -235,7 +235,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(1, 10, 8, 1, 12, 13, 9);
+                await NewMethod1(1, 10, 8, 1, 12, 13, 9);
             }
         }
         private async void Button10_Click(object sender, EventArgs e)
@@ -246,7 +246,7 @@ namespace Firefox_2_test
             }
             else if (!checkBox3.Checked)
             {
-                await NewMethod(1, 10, 9, 1, 12, 13, 10);
+                await NewMethod1(1, 10, 9, 1, 12, 13, 10);
             }
         }
         private async void Button11_Click(object sender, EventArgs e)
@@ -306,7 +306,6 @@ namespace Firefox_2_test
             {
                 myWebClient.DownloadProgressChanged += (o, args) =>
                 {
-                    //string[] i = args.UserState.ToString().Split(new char[] { '|' });
                     Control[] progressBars = Controls.Find("progressBar" + d, true);
                     Control[] buttons = Controls.Find("button" + g, true);
                     Control[] label1 = Controls.Find("label" + e, true);
@@ -396,8 +395,6 @@ namespace Firefox_2_test
                     File.Delete("Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
                     label.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
                 };
-                //myWebClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                //myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
                 try
                 {
                     var task = myWebClient.DownloadFileTaskAsync(uri, "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
@@ -626,7 +623,7 @@ namespace Firefox_2_test
             if (File.Exists(@"Firefox\updates\Version.log"))
             {
                 string[] instVersion = File.ReadAllText(@"Firefox\updates\Version.log").Split(new char[] { '|' });
-                if ((instVersion[0] == buildversion[c]) && (instVersion[1] == ring[c]) && (instVersion[2] == architektur[a]))
+                if ((instVersion[0] == buildversion[c]) && (instVersion[1] == ring2[c]) && (instVersion[2] == architektur[a]))
                 {
                     if (checkBox4.Checked)
                     {
@@ -790,6 +787,27 @@ namespace Firefox_2_test
             {
                 CheckButton2();
             }
+        }
+        private void CheckUpdate()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/Experimental/Version.txt");
+            var response = request.GetResponse();
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                var version = reader.ReadToEnd();
+                reader.Close();
+                FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
+                if (Convert.ToDecimal(version) > Convert.ToDecimal(testm.FileVersion))
+                {
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    using (WebClient myWebClient2 = new WebClient())
+                    {
+                        myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorFirefoxUpd/releases/download/v{version}/Portable.Firefox.Updater.v{version}.7z", @"Portable.Firefox.Updater.v" + version + ".7z");
+                    }
+                }
+            }
+            
         }
     }
 }
