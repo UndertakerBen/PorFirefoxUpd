@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -9,10 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Security.Cryptography;
-using System.Runtime.InteropServices;
+using Firefox_Updater.Properties;
 
 namespace Firefox_2_test
 {
@@ -790,24 +786,117 @@ namespace Firefox_2_test
         }
         private void CheckUpdate()
         {
+            Form updateForm = new Form
+            {
+                Size = new Size(300, 150),
+                ShowIcon = true,
+                Icon = Resources.Firefox_Updater_32,
+                Text = "New Versioninfo",
+                TopMost = true,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label versionLabel = new Label
+            {
+                AutoSize = false,
+                TextAlign = ContentAlignment.BottomCenter,
+                Dock = DockStyle.None,
+                Location = new Point(0, 35),
+                Size = new Size(280, 25),
+            };
+            versionLabel.Font = new Font(versionLabel.Font.Name, 10F, FontStyle.Bold);
+            updateForm.Controls.Add(versionLabel);
+            Label infoLabel = new Label
+            {
+                AutoSize = false,
+                TextAlign = ContentAlignment.BottomCenter,
+                Dock = DockStyle.None,
+                Location = new Point(0, 10),
+                Size = new Size(284, 25),
+                Text = "Eine neue Version ist verfügbar"
+            };
+            infoLabel.Font = new Font(infoLabel.Font.Name, 8.75F);
+            updateForm.Controls.Add(infoLabel);
+            Label downLabel = new Label
+            {
+                Location = new Point(25, 71),
+                TextAlign = ContentAlignment.MiddleRight,
+                AutoSize = false,
+                Size = new Size(100, 23),
+                Text = "Jetzt Updaten"
+            };
+            updateForm.Controls.Add(downLabel);
+           
+            Button laterButton = new Button
+            {
+                Location = new Point(135, 71),
+                Text = "Nein",
+                Size = new Size(40, 23)
+            };
+            laterButton.Click += new EventHandler(LaterButton_Click);
+            updateForm.Controls.Add(laterButton);
+            Button updateButton = new Button
+            {
+                Location = new Point(180, 71),
+                Text = "Ja",
+                Size = new Size(40, 23)
+            };
+            updateForm.Controls.Add(updateButton);
+            updateButton.Click += new EventHandler(UpdateButton_Click);
+            if (culture1.Name != "de-DE")
+            {
+                infoLabel.Text = "A new version is available";
+                laterButton.Text = "No";
+                updateButton.Text = "Yes";
+                downLabel.Text = "Update now";
+            }
+            void LaterButton_Click(object sender, EventArgs e)
+            {
+                updateForm.Close();
+            }
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/Experimental/Version.txt");
+            var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
             var response = request.GetResponse();
             using (StreamReader reader = new StreamReader(response.GetResponseStream()))
             {
                 var version = reader.ReadToEnd();
-                reader.Close();
+                versionLabel.Text = version;
                 FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
                 if (Convert.ToDecimal(version) > Convert.ToDecimal(testm.FileVersion))
                 {
+                    updateForm.Show();
+                }
+                reader.Close();
+            }
+            void UpdateButton_Click(object sender, EventArgs e)
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var request2 = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+                var response2 = request2.GetResponse();
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    var version = reader.ReadToEnd();
+                    reader.Close();
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     using (WebClient myWebClient2 = new WebClient())
                     {
                         myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorFirefoxUpd/releases/download/v{version}/Portable.Firefox.Updater.v{version}.7z", @"Portable.Firefox.Updater.v" + version + ".7z");
                     }
+                    File.AppendAllText(@"Update.cmd", "@echo off" + "\n" +
+                        "timeout /t 1 /nobreak" + "\n" +
+                        "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Firefox Updater.exe\"" + " -y\n" +
+                        "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Firefox Updater.exe\"\n" +
+                        "del /f /q \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\"\n" +
+                        "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\n" +
+                        "exit\n");
+
+                    string arguments = " /c call Update.cmd";
+                    Process process = new Process();
+                    process.StartInfo.FileName = "cmd.exe";
+                    process.StartInfo.Arguments = arguments;
+                    process.Start();
+                    Close();
                 }
             }
-            
         }
     }
 }
