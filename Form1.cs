@@ -129,7 +129,7 @@ namespace Firefox_2_test
                     }
                 }
             }
-            //CheckUpdate();
+            CheckUpdate();
         }
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
