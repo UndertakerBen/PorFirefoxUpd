@@ -1,12 +1,14 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Globalization;
+using System.Collections.Generic;
+using Firefox_Updater.Properties;
 
 namespace Firefox_2_test
 {
@@ -23,7 +25,7 @@ namespace Firefox_2_test
         public static string[] buildversion = new string[10];
         public static string[] tooltipps = new string[10];
         readonly ToolTip toolTip = new ToolTip();
-        WebClient myWebClient = new WebClient();
+        readonly WebClient myWebClient = new WebClient();
         readonly CultureInfo culture1 = CultureInfo.CurrentUICulture;
         public int comboIndex;
         public Form1()
@@ -93,9 +95,17 @@ namespace Firefox_2_test
                         checkBox3.Checked = true;
                         CheckButton();
                     }
-                    else if (File.Exists(@"Firefox\Firefox.exe"))
+                    else if (!checkBox3.Checked)
                     {
-                        CheckButton2();
+                        checkBox1.Enabled = false;
+                        checkBox2.Enabled = false;
+                        button11.Enabled = false;
+                        button11.BackColor = Color.FromArgb(244, 244, 244);
+
+                        if (File.Exists(@"Firefox\Firefox.exe"))
+                        {
+                            CheckButton2();
+                        }
                     }
                 }
                 else if (IntPtr.Size != 8)
@@ -106,285 +116,311 @@ namespace Firefox_2_test
                         checkBox1.Enabled = false;
                         CheckButton();
                     }
-                    else if (File.Exists(@"Firefox\Firefox.exe"))
+                    else if (!checkBox3.Checked)
                     {
-                        CheckButton2();
+                        checkBox1.Enabled = false;
+                        button11.Enabled = false;
+                        button11.BackColor = Color.FromArgb(244, 244, 244);
+
+                        if (File.Exists(@"Firefox\Firefox.exe"))
+                        {
+                            CheckButton2();
+                        }
                     }
                 }
             }
+            CheckUpdate();
         }
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboIndex = comboBox1.SelectedIndex;
         }
-
-        private void Button1_Click(object sender, EventArgs e)
+        private async void Button1_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(0, 0, 0, 1, 12, 13 ,1);
+                await NewMethod(0, 0, 0, 1);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(0, 10, 0, 1, 12, 13, 1);
+                await NewMethod1(0, 10, 0, 1);
             }
         }
-        private void Button2_Click(object sender, EventArgs e)
+        private async void Button2_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(0, 1, 1, 2, 14, 15, 2);
+                await NewMethod(0, 1, 1, 2);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(0, 10, 1, 1, 12, 13, 2);
+                await NewMethod1(0, 10, 1, 2);
             }
         }
-        private void Button3_Click(object sender, EventArgs e)
+        private async void Button3_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(0, 2, 2, 3, 17, 16, 3);
+                await NewMethod(0, 2, 2, 3);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(0, 10, 2, 1, 12, 13, 3);
+                await NewMethod1(0, 10, 2, 3);
             }
         }
-        private void Button4_Click(object sender, EventArgs e)
+        private async void Button4_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(0, 3, 3, 4, 19, 18, 4);
+                await NewMethod(0, 3, 3, 4);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(0, 10, 3, 1, 12, 13, 4);
+                await NewMethod1(0, 10, 3, 4);
             }
         }
-        private void Button5_Click(object sender, EventArgs e)
+        private async void Button5_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(0, 4, 4, 5, 21, 20, 5);
+                await NewMethod(0, 4, 4, 5);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(0, 10, 4, 1, 12, 13, 5);
+                await NewMethod1(0, 10, 4, 5);
             }
         }
-        private void Button6_Click(object sender, EventArgs e)
+        private async void Button6_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(1, 5, 5, 6, 23, 22, 6);
+                await NewMethod(1, 5, 5,6);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(1, 10, 5, 1, 12, 13, 6);
+                await NewMethod1(1, 10, 5, 6);
             }
         }
-        private void Button7_Click(object sender, EventArgs e)
+        private async void Button7_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(1, 6, 6, 7, 25, 24, 7);
+                await NewMethod(1, 6, 6, 7);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(1, 10, 6, 1, 12, 13, 7);
+                await NewMethod1(1, 10, 6, 7);
             }
         }
-        private void Button8_Click(object sender, EventArgs e)
+        private async void Button8_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(1, 7, 7, 8, 27, 26, 8);
+                await NewMethod(1, 7, 7, 8);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(1, 10, 7, 1, 12, 13, 8);
+                await NewMethod1(1, 10, 7, 8);
             }
         }
-        private void Button9_Click(object sender, EventArgs e)
+        private async void Button9_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(1, 8, 8, 9, 29, 28, 9);
+                await NewMethod(1, 8, 8,9);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(1, 10, 8, 1, 12, 13, 9);
+                await NewMethod1(1, 10, 8, 9);
             }
         }
-        private void Button10_Click(object sender, EventArgs e)
+        private async void Button10_Click(object sender, EventArgs e)
         {
             if (checkBox3.Checked)
             {
-                NewMethod(1, 9, 9, 10, 31, 30, 10);
+                await NewMethod(1, 9, 9, 10);
             }
             else if (!checkBox3.Checked)
             {
-                NewMethod(1, 10, 9, 1, 12, 13, 10);
+                await NewMethod1(1, 10, 9, 10);
             }
         }
-        private void Button11_Click(object sender, EventArgs e)
+        private async void Button11_Click(object sender, EventArgs e)
+        {
+            await Testing();
+        }
+        private async Task Testing()
         {
             if ((!Directory.Exists(@"Firefox ESR x86")) && (!Directory.Exists(@"Firefox Nightly x86")) && (!Directory.Exists(@"Firefox Dev x86")) && (!Directory.Exists(@"Firefox Beta x86")) && (!Directory.Exists(@"Firefox Stable x86")))
             {
                 if (checkBox1.Checked)
                 {
-                    DownloadFile(0, 0, 0, 1, 12, 13, 1);
-                    DownloadFile(0, 1, 1, 2, 14, 15, 2);
-                    DownloadFile(0, 2, 2, 3, 17, 16, 3);
-                    DownloadFile(0, 3, 3, 4, 19, 18, 4);
-                    DownloadFile(0, 4, 4, 5, 21, 20, 5);
+                    await DownloadFile(0, 0, 0,1);
+                    await DownloadFile(0, 1, 1,2);
+                    await DownloadFile(0, 2, 2,3);
+                    await DownloadFile(0, 3, 3, 4);
+                    await DownloadFile(0, 4, 4, 5);
                 }
             }
 
-            NewMethod2(0, 0, 0, 1, 12, 13, 1);
-            NewMethod2(0, 1, 1, 2, 14, 15, 2);
-            NewMethod2(0, 2, 2, 3, 17, 16, 3);
-            NewMethod2(0, 3, 3, 4, 19, 18, 4);
-            NewMethod2(0, 4, 4, 5, 21, 20, 5);
+            await NewMethod2(0, 0, 0, 1);
+            await NewMethod2(0, 1, 1, 2);
+            await NewMethod2(0, 2, 2, 3);
+            await NewMethod2(0, 3, 3, 4);
+            await NewMethod2(0, 4, 4, 5);
             if (IntPtr.Size == 8)
             {
                 if ((!Directory.Exists(@"Firefox ESR x64")) && (!Directory.Exists(@"Firefox Nightly x64")) && (!Directory.Exists(@"Firefox Dev x64")) && (!Directory.Exists(@"Firefox Beta x64")) && (!Directory.Exists(@"Firefox Stable x64")))
                 {
                     if (checkBox2.Checked)
                     {
-                        DownloadFile(1, 5, 5, 6, 23, 22, 6);
-                        DownloadFile(1, 6, 6, 7, 25, 24, 7);
-                        DownloadFile(1, 7, 7, 8, 27, 26, 8);
-                        DownloadFile(1, 8, 8, 9, 29, 28, 9);
-                        DownloadFile(1, 9, 9, 10, 31, 30, 10);
+                        await DownloadFile(1, 5, 5, 6);
+                        await DownloadFile(1, 6, 6, 7);
+                        await DownloadFile(1, 7, 7, 8);
+                        await DownloadFile(1, 8, 8, 9);
+                        await DownloadFile(1, 9, 9, 10);
                     }
                 }
-                NewMethod2(1, 5, 5, 6, 23, 22, 6);
-                NewMethod2(1, 6, 6, 7, 25, 24, 7);
-                NewMethod2(1, 7, 7, 8, 27, 26, 8);
-                NewMethod2(1, 8, 8, 9, 29, 28, 9);
-                NewMethod2(1, 9, 9, 10, 31, 30, 10);
+                await NewMethod2(1, 5, 5, 6);
+                await NewMethod2(1, 6, 6, 7);
+                await NewMethod2(1, 7, 7, 8);
+                await NewMethod2(1, 8, 8,9);
+                await NewMethod2(1, 9, 9, 10);
             }
         }
-        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        public async Task DownloadFile(int a, int b, int c, int g)
         {
-            string[] i = e.UserState.ToString().Split(new char[] { '|' });
-            Control[] progressBars = Controls.Find("progressBar" + i[3], true);
-            Control[] buttons = Controls.Find("button" + i[6], true);
-            Control[] label1 = Controls.Find("label" + i[4], true);
-            Control[] label2 = Controls.Find("label" + i[5], true);
-            if (buttons.Length > 0)
+            Form progessForm = new Form
             {
-                Button button = (Button)buttons[0];
-                button.BackColor = Color.Orange;
-            }
-            if (progressBars.Length > 0)
+                AutoSize = true,
+                Size = new Size(365, 125),
+                Icon = Resources.Firefox_Updater_32,
+                Text = "Firefox download",
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label title = new Label
             {
-                ProgressBar progressBar = (ProgressBar)progressBars[0];
-                progressBar.Visible = true;
-                progressBar.Value = e.ProgressPercentage;
-            }
-            if (label1.Length > 0)
+                AutoSize = false,
+                Location = new Point(0, 5),
+                Size = new Size(340, 25),
+                Text = "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe",
+                TextAlign = ContentAlignment.BottomCenter
+            };
+            title.Font = new Font(title.Font.Name, 10F, FontStyle.Bold);
+            progessForm.Controls.Add(title);
+            Label downloadLabel = new Label
             {
-                Label label = (Label)label1[0];
-                label.Visible = true;
-                label.Text = string.Format("{0} MB's / {1} MB's",
-                (e.BytesReceived / 1024d / 1024d).ToString("0.00"),
-                (e.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
-            }
-            if (label2.Length > 0)
+                AutoSize = false,
+                Location = new Point(15, 35),
+                Size = new Size(200, 25),
+                TextAlign = ContentAlignment.BottomLeft
+            };
+            progessForm.Controls.Add(downloadLabel);
+            Label percLabel = new Label
             {
-                Label label3 = (Label)label2[0];
-                label3.Visible = true;
-                label3.Text = e.ProgressPercentage.ToString() + "%";
-            }
-        }
-        private void Completed(object sender, AsyncCompletedEventArgs e)
-        {
-            string[] i = e.UserState.ToString().Split(new char[] { '|' });
-            int b = int.Parse(i[4]);
-            var d = int.Parse(i[1]);
-            int c = int.Parse(i[2]);
-            int a = int.Parse(i[0]);
-            Control[] labels = Controls.Find("label" + b, true);
-            Label label = (Label)labels[0];
-            if (e.Cancelled == true)
+                AutoSize = false,
+                Location = new Point(235, 35),
+                Size = new Size(100, 25),
+                TextAlign = ContentAlignment.BottomRight
+            };
+            progessForm.Controls.Add(percLabel);
+            ProgressBar progressBarneu = new ProgressBar
             {
-                MessageBox.Show("Download has been canceled.");
-            }
-            else
-            {
-                if (labels.Length > 0)
-                {
-                    label.Text = culture1.Name != "de-DE" ? "Unpacking" : "Entpacken";
-                    string arguments = " x " + i[7] + " -o" + @"Update\" + entpDir[d] + " -y";
-                    Process process = new Process();
-                    process.StartInfo.FileName = @"Bin\7zr.exe";
-                    process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-                    process.StartInfo.Arguments = arguments;
-                    process.Start();
-                    process.WaitForExit();
-                    if (File.Exists(instDir[d] + "\\updates\\Version.log"))
-                    {
-                        if (checkBox3.Checked)
-                        {
-                            string[] instVersion = File.ReadAllText(instDir[d] + "\\updates\\Version.log").Split(new char[] { '|' });
-                            if (buildversion[c] != instVersion[0])
-                            {
-                                NewMethod4(d, c, a);
-                            }
-                            else if ((buildversion[c] == instVersion[0]) && (checkBox4.Checked))
-                            {
-                                NewMethod4(d, c, a);
-                            }
-                        }
-                        else if (!checkBox3.Checked)
-                        {
-                            NewMethod4(d, c, a);
-                        }
-                    }
-                    else
-                    {
-                        NewMethod9(d, c, a);
-                    }
-                }
-            }
-            if (checkBox5.Checked)
-            {
-                if (!File.Exists(deskDir + "\\" + instDir[d] + ".lnk"))
-                {
-                    NewMethod5(d);
-                }
-            }
-            if (!File.Exists(@instDir[d] + " Launcher.exe"))
-            {
-                File.Copy(@"Bin\Launcher\" + instDir[d] + " Launcher.exe", @instDir[d] + " Launcher.exe");
-            }
-            File.Delete(i[7]);
-            label.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
-        }
-        public void DownloadFile(int a, int b, int c, int d, int e, int f, int g)
-        {
+                Location = new Point(15, 65),
+                Size = new Size(320, 7)
+            };
+            progessForm.Controls.Add(progressBarneu);
+            List<Task> list = new List<Task>();
             WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[c] + lang[comboIndex]);
             WebResponse myWebResponse = myWebRequest.GetResponse();
             Uri uri = new Uri(myWebResponse.ResponseUri.ToString());
             ServicePoint sp = ServicePointManager.FindServicePoint(uri);
             sp.ConnectionLimit = 10;
             myWebResponse.Close();
-            using (myWebClient = new WebClient())
+            using (WebClient myWebClient = new WebClient())
             {
-                myWebClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                myWebClient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+                myWebClient.DownloadProgressChanged += (o, args) =>
+                {
+                    Control[] buttons = Controls.Find("button" + g, true);
+                    if (buttons.Length > 0)
+                    {
+                        Button button = (Button)buttons[0];
+                        button.BackColor = Color.Orange;
+                    }
+                    progressBarneu.Value = args.ProgressPercentage;
+                    downloadLabel.Text = string.Format("{0} MB's / {1} MB's",
+                        (args.BytesReceived / 1024d / 1024d).ToString("0.00"),
+                        (args.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
+                    percLabel.Text = args.ProgressPercentage.ToString() + "%";
+                };
+                myWebClient.DownloadFileCompleted += (o, args) =>
+                {
+                    if (args.Cancelled == true)
+                    {
+                        MessageBox.Show("Download has been canceled.");
+                    }
+                    else
+                    {
+                            downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacking" : "Entpacken";
+                            string arguments = " x " + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe" + " -o" + @"Update\" + entpDir[b] + " -y";
+                            Process process = new Process();
+                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                            process.StartInfo.Arguments = arguments;
+                            process.Start();
+                            process.WaitForExit();
+                        if (File.Exists(instDir[b] + "\\updates\\Version.log"))
+                        {
+                            if (checkBox3.Checked)
+                            {
+                                string[] instVersion = File.ReadAllText(instDir[b] + "\\updates\\Version.log").Split(new char[] { '|' });
+                                if (buildversion[c] != instVersion[0])
+                                {
+                                    NewMethod4(b, c, a);
+                                }
+                                else if ((buildversion[c] == instVersion[0]) && (checkBox4.Checked))
+                                {
+                                    NewMethod4(b, c, a);
+                                }
+                            }
+                            else if (!checkBox3.Checked)
+                            {
+                                NewMethod4(b, c, a);
+                            }
+                        }
+                        else
+                        {
+                            NewMethod9(b, c, a);
+                        }
+                    }
+                    if (checkBox5.Checked)
+                    {
+                        if (!File.Exists(deskDir + "\\" + instDir[b] + ".lnk"))
+                        {
+                            NewMethod5(b);
+                        }
+                    }
+                    if (!File.Exists(@instDir[b] + " Launcher.exe"))
+                    {
+                        File.Copy(@"Bin\Launcher\" + instDir[b] + " Launcher.exe", @instDir[b] + " Launcher.exe");
+                    }
+                    File.Delete("Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
+                    downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
+                };
                 try
                 {
-                    myWebClient.DownloadFileAsync(uri, "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe", a + "|" + b + "|" + c + "|" + d + "|" + e + "|" + f + "|" + g + "|" + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
+                    progessForm.Show();
+                    var task = myWebClient.DownloadFileTaskAsync(uri, "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
+                    list.Add(task);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
             }
+            await Task.WhenAll(list);
+            await Task.Delay(2000);
+            progessForm.Close();
         }
         public void Message1()
         {
@@ -484,7 +520,6 @@ namespace Firefox_2_test
                 CheckButton2();
             }
         }
-
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox1.Checked)
@@ -498,7 +533,6 @@ namespace Firefox_2_test
                 button11.BackColor = Color.FromArgb(244, 244, 244);
             }
         }
-
         private void CheckBox2_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox2.Checked)
@@ -512,7 +546,6 @@ namespace Firefox_2_test
                 button11.BackColor = Color.FromArgb(244, 244, 244);
             }
         }
-
         private void Button12_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -571,7 +604,7 @@ namespace Firefox_2_test
                 button11.BackColor = Color.FromArgb(244, 244, 244);
             }
         }
-        private void NewMethod(int a, int b, int c, int d, int e, int f, int g)
+        private async Task NewMethod(int a, int b, int c, int g)
         {
             if (File.Exists(@instDir[b] + "\\updates\\Version.log"))
             {
@@ -580,7 +613,7 @@ namespace Firefox_2_test
                 {
                     if (checkBox4.Checked)
                     {
-                        DownloadFile(a, b, c, d, e, f, g);
+                        await DownloadFile(a, b, c,g);
                     }
                     else
                     {
@@ -589,24 +622,24 @@ namespace Firefox_2_test
                 }
                 else
                 {
-                    DownloadFile(a, b, c, d, e, f, g);
+                    await DownloadFile(a, b, c, g);
                 }
             }
             else
             {
-                DownloadFile(a, b, c, d, e, f, g);
+                await DownloadFile(a, b, c, g);
             }
         }
-        private void NewMethod1(int a, int b, int c, int d, int e, int f, int g)
+        private async Task NewMethod1(int a, int b, int c, int g)
         {
             if (File.Exists(@"Firefox\updates\Version.log"))
             {
                 string[] instVersion = File.ReadAllText(@"Firefox\updates\Version.log").Split(new char[] { '|' });
-                if ((instVersion[0] == buildversion[c]) && (instVersion[1] == ring[c]) && (instVersion[2] == architektur[a]))
+                if ((instVersion[0] == buildversion[c]) && (instVersion[1] == ring2[c]) && (instVersion[2] == architektur[a]))
                 {
                     if (checkBox4.Checked)
                     {
-                        DownloadFile(a, b, c, d, e, f, g);
+                        await DownloadFile(a, b, c, g);
                     }
                     else
                     {
@@ -615,15 +648,15 @@ namespace Firefox_2_test
                 }
                 else
                 {
-                    DownloadFile(a, b, c, d, e, f, g);
+                    await DownloadFile(a, b, c, g);
                 }
             }
             else
             {
-                DownloadFile(a, b, c, d, e, f, g);
+                await DownloadFile(a, b, c, g);
             }
         }
-        private void NewMethod2(int a, int b, int c, int d, int e, int f, int g)
+        private async Task NewMethod2(int a, int b, int c, int g)
         {
             if (Directory.Exists(instDir[b]))
             {
@@ -632,7 +665,7 @@ namespace Firefox_2_test
                     string[] instVersion = File.ReadAllText(@instDir[b] + "\\updates\\Version.log").Split(new char[] { '|' });
                     if (instVersion[0] != buildversion[c])
                     {
-                        DownloadFile(a, b, c, d, e, f, g);
+                        await DownloadFile(a, b, c, g);
                     }
                 }
             }
@@ -765,6 +798,120 @@ namespace Firefox_2_test
             else if (!checkBox3.Checked)
             {
                 CheckButton2();
+            }
+        }
+        private void CheckUpdate()
+        {
+            Form updateForm = new Form
+            {
+                Size = new Size(300, 150),
+                ShowIcon = true,
+                Icon = Resources.Firefox_Updater_32,
+                Text = "New Versioninfo",
+                TopMost = true,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label versionLabel = new Label
+            {
+                AutoSize = false,
+                TextAlign = ContentAlignment.BottomCenter,
+                Dock = DockStyle.None,
+                Location = new Point(0, 35),
+                Size = new Size(280, 25),
+            };
+            versionLabel.Font = new Font(versionLabel.Font.Name, 10F, FontStyle.Bold);
+            updateForm.Controls.Add(versionLabel);
+            Label infoLabel = new Label
+            {
+                AutoSize = false,
+                TextAlign = ContentAlignment.BottomCenter,
+                Dock = DockStyle.None,
+                Location = new Point(0, 10),
+                Size = new Size(284, 25),
+                Text = "Eine neue Version ist verfügbar"
+            };
+            infoLabel.Font = new Font(infoLabel.Font.Name, 8.75F);
+            updateForm.Controls.Add(infoLabel);
+            Label downLabel = new Label
+            {
+                Location = new Point(25, 71),
+                TextAlign = ContentAlignment.MiddleRight,
+                AutoSize = false,
+                Size = new Size(100, 23),
+                Text = "Jetzt Updaten"
+            };
+            updateForm.Controls.Add(downLabel);
+           
+            Button laterButton = new Button
+            {
+                Location = new Point(135, 71),
+                Text = "Nein",
+                Size = new Size(40, 23)
+            };
+            laterButton.Click += new EventHandler(LaterButton_Click);
+            updateForm.Controls.Add(laterButton);
+            Button updateButton = new Button
+            {
+                Location = new Point(180, 71),
+                Text = "Ja",
+                Size = new Size(40, 23)
+            };
+            updateForm.Controls.Add(updateButton);
+            updateButton.Click += new EventHandler(UpdateButton_Click);
+            if (culture1.Name != "de-DE")
+            {
+                infoLabel.Text = "A new version is available";
+                laterButton.Text = "No";
+                updateButton.Text = "Yes";
+                downLabel.Text = "Update now";
+            }
+            void LaterButton_Click(object sender, EventArgs e)
+            {
+                updateForm.Close();
+            }
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+            var response = request.GetResponse();
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                var version = reader.ReadToEnd();
+                versionLabel.Text = version;
+                FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
+                if (Convert.ToDecimal(version) > Convert.ToDecimal(testm.FileVersion))
+                {
+                    updateForm.Show();
+                }
+                reader.Close();
+            }
+            void UpdateButton_Click(object sender, EventArgs e)
+            {
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var request2 = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+                var response2 = request2.GetResponse();
+                using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
+                {
+                    var version = reader.ReadToEnd();
+                    reader.Close();
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    using (WebClient myWebClient2 = new WebClient())
+                    {
+                        myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorFirefoxUpd/releases/download/v{version}/Portable.Firefox.Updater.v{version}.7z", @"Portable.Firefox.Updater.v" + version + ".7z");
+                    }
+                    File.AppendAllText(@"Update.cmd", "@echo off" + "\n" +
+                        "timeout /t 1 /nobreak" + "\n" +
+                        "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Firefox Updater.exe\"" + " -y\n" +
+                        "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Firefox Updater.exe\"\n" +
+                        "del /f /q \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\"\n" +
+                        "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\n" +
+                        "exit\n");
+
+                    string arguments = " /c call Update.cmd";
+                    Process process = new Process();
+                    process.StartInfo.FileName = "cmd.exe";
+                    process.StartInfo.Arguments = arguments;
+                    process.Start();
+                    Close();
+                }
             }
         }
     }
