@@ -334,7 +334,7 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(25, 319);
+            this.checkBox3.Location = new System.Drawing.Point(25, 320);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(207, 17);
             this.checkBox3.TabIndex = 23;
@@ -345,7 +345,7 @@
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(25, 342);
+            this.checkBox4.Location = new System.Drawing.Point(25, 343);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(155, 17);
             this.checkBox4.TabIndex = 24;
@@ -520,6 +520,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.GhostWhite;
             this.ClientSize = new System.Drawing.Size(373, 390);
@@ -530,6 +531,7 @@
             this.Controls.Add(this.checkBox3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
+            this.Padding = new System.Windows.Forms.Padding(10);
             this.Text = "Portable Firefox Updater";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.groupBox1.ResumeLayout(false);

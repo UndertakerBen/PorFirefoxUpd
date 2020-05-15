@@ -17,35 +17,38 @@ namespace Firefox_Launcher
             CultureInfo culture1 = CultureInfo.CurrentUICulture;
             if (File.Exists(@"Firefox\Firefox.exe"))
             {
-                if (!File.Exists(@"Firefox\updates\Profile.txt"))
+                var sb = new System.Text.StringBuilder();
+                string[] CommandLineArgs = Environment.GetCommandLineArgs();
+                for (int i = 1; i < CommandLineArgs.Length; i++)
                 {
-                    if (culture1.Name == "de-DE")
+                    if (CommandLineArgs[i].Contains("="))
                     {
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new Form1());
-                        String Arguments = File.ReadAllText(@"Firefox\updates\Profile.txt");
-                        _ = Process.Start(@"Firefox\Firefox.exe", Arguments);
+                        string[] test = CommandLineArgs[i].Split(new char[] { '=' }, 2);
+                        sb.Append(" " + test[0] + "=\"" + test[1] + "\"");
                     }
                     else
                     {
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new Form2());
-                        String Arguments = File.ReadAllText(@"Firefox\updates\Profile.txt");
-                        _ = Process.Start(@"Firefox\Firefox.exe", Arguments);
+                        sb.Append(" " + CommandLineArgs[i]);
                     }
-                    }
+                }
+                if (!File.Exists(@"Firefox\updates\Profile.txt"))
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new Form1());
+                    String Arguments = File.ReadAllText(@"Firefox\updates\Profile.txt") + sb.ToString();
+                    _ = Process.Start(@"Firefox\Firefox.exe", Arguments);
+                }
                 else
                 {
-                    String Arguments = File.ReadAllText(@"Firefox\updates\Profile.txt");
+                    String Arguments = File.ReadAllText(@"Firefox\updates\Profile.txt") + sb.ToString();
                     if (File.Exists(@"Firefox\profile\extensions.json"))
                     {
                         File.Delete(@"Firefox\profile\extensions.json");
                         Process.Start(@"Firefox\Firefox.exe", Arguments);
                     }
                     else if (File.Exists(@"profile\extensions.json"))
-                        {
+                    {
                         File.Delete(@"profile\extensions.json");
                         Process.Start(@"Firefox\Firefox.exe", Arguments);
                     }
@@ -56,15 +59,17 @@ namespace Firefox_Launcher
 
                 }
             }
-            else if (culture1.Name == "de-DE")
+            else if (culture1.TwoLetterISOLanguageName == "de")
             {
-                string message = "Firefox ist nicht installiert";
-                _ = MessageBox.Show(message, "Firefox Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                _ = MessageBox.Show("Firefox ist nicht installiert", "Firefox Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else if (culture1.TwoLetterISOLanguageName == "ru")
+            {
+                _ = MessageBox.Show("Mozilla Firefox не найден", "Firefox Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                string message = "Firefox is not installed";
-                _ = MessageBox.Show(message, "Firefox Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                _ = MessageBox.Show("Firefox is not installed", "Firefox Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

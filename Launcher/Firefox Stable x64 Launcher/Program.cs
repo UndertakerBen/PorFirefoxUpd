@@ -17,28 +17,31 @@ namespace Firefox_Stable_x64_Launcher
             CultureInfo culture1 = CultureInfo.CurrentUICulture;
             if (File.Exists(@"Firefox Stable x64\Firefox.exe"))
             {
-                if (!File.Exists(@"Firefox Stable x64\updates\Profile.txt"))
+                var sb = new System.Text.StringBuilder();
+                string[] CommandLineArgs = Environment.GetCommandLineArgs();
+                for (int i = 1; i < CommandLineArgs.Length; i++)
                 {
-                    if (culture1.Name == "de-DE")
+                    if (CommandLineArgs[i].Contains("="))
                     {
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new Form1());
-                        String Arguments = File.ReadAllText(@"Firefox Stable x64\updates\Profile.txt");
-                        Process.Start(@"Firefox Stable x64\Firefox.exe", Arguments);
+                        string[] test = CommandLineArgs[i].Split(new char[] { '=' }, 2);
+                        sb.Append(" " + test[0] + "=\"" + test[1] + "\"");
                     }
                     else
                     {
-                        Application.EnableVisualStyles();
-                        Application.SetCompatibleTextRenderingDefault(false);
-                        Application.Run(new Form2());
-                        String Arguments = File.ReadAllText(@"Firefox Stable x64\updates\Profile.txt");
-                        Process.Start(@"Firefox Stable x64\Firefox.exe", Arguments);
+                        sb.Append(" " + CommandLineArgs[i]);
                     }
+                }
+                if (!File.Exists(@"Firefox Stable x64\updates\Profile.txt"))
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new Form1());
+                    String Arguments = File.ReadAllText(@"Firefox Stable x64\updates\Profile.txt") + sb.ToString();
+                    Process.Start(@"Firefox Stable x64\Firefox.exe", Arguments);
                 }
                 else
                 {
-                    String Arguments = File.ReadAllText(@"Firefox Stable x64\updates\Profile.txt");
+                    String Arguments = File.ReadAllText(@"Firefox Stable x64\updates\Profile.txt") + sb.ToString();
                     if (File.Exists(@"Firefox Stable x64\profile\extensions.json"))
                     {
                         File.Delete(@"Firefox Stable x64\profile\extensions.json");
@@ -55,15 +58,17 @@ namespace Firefox_Stable_x64_Launcher
                     }
                 }
             }
-            else if (culture1.Name == "de-DE")
+            else if (culture1.TwoLetterISOLanguageName == "de")
             {
-                string message = "Firefox Stable x64 ist nicht installiert";
-                MessageBox.Show(message, "Firefox Stable x64 Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                _ = MessageBox.Show("Firefox Stable x64 ist nicht installiert", "Firefox Stable x64 Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else if (culture1.TwoLetterISOLanguageName == "ru")
+            {
+                _ = MessageBox.Show("Mozilla Firefox не найден", "Firefox Stable x64 Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
             {
-                string message = "Firefox Stable x64 is not installed";
-                MessageBox.Show(message, "Firefox Stable x64 Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                _ = MessageBox.Show("Firefox Stable x64 is not installed", "Firefox Stable x64 Launcher", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

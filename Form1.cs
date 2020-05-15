@@ -55,22 +55,43 @@ namespace Firefox_2_test
                 label8.Text = buildversion[2];
                 label9.Text = buildversion[3];
                 label10.Text = buildversion[4];
-                comboBox1.SelectedIndex = 34;
-                comboIndex = comboBox1.SelectedIndex;
                 button11.Enabled = false;
                 checkBox1.Enabled = false;
                 checkBox2.Enabled = false;
-                if (culture1.Name != "de-DE")
+                switch (culture1.TwoLetterISOLanguageName)
                 {
-                    button12.Text = "Quit";
-                    button11.Text = "Install all";
-                    label11.Text = "Install all x86 and or x64";
-                    checkBox4.Text = "Ignore version check";
-                    checkBox3.Text = "Create a Folder for each version";
-                    groupBox3.Text = "Select your desired language";
-                    checkBox5.Text = "Create a shortcut on the desktop";
-                    comboBox1.SelectedIndex = 24;
+                    case "ru":
+                        button12.Text = "Выход";
+                        button11.Text = "Установить все";
+                        label11.Text = "Установить все версии x86 и/или x64";
+                        checkBox4.Text = "Игнорировать проверку версии";
+                        checkBox3.Text = "Разные версии в отдельных папках";
+                        checkBox5.Text = "Создать ярлык на рабочем столе";
+                        groupBox3.Text = "Выберите желаемый язык";
+                        comboBox1.SelectedIndex = Array.IndexOf(lang, "ru");
+                        break;
+                    case "de":
+                        button12.Text = "Beenden";
+                        button11.Text = "Alle Installieren";
+                        label11.Text = "Alle x86 und oder x64 installieren";
+                        checkBox4.Text = "Versionkontrolle ignorieren";
+                        checkBox3.Text = "Für jede Version einen eigenen Ordner";
+                        checkBox5.Text = "Eine Verknüpfung auf dem Desktop erstellen";
+                        groupBox3.Text = "Wählen Sie die gewünschte Sprache";
+                        comboBox1.SelectedIndex = Array.IndexOf(lang, "de");
+                        break;
+                    default:
+                        button12.Text = "Quit";
+                        button11.Text = "Install all";
+                        label11.Text = "Install all x86 and or x64";
+                        checkBox4.Text = "Ignore version check";
+                        checkBox3.Text = "Create a Folder for each version";
+                        checkBox5.Text = "Create a shortcut on the desktop";
+                        groupBox3.Text = "Select your desired language";
+                        comboBox1.SelectedIndex = Array.IndexOf(lang, "en-US");
+                        break;
                 }
+                comboIndex = comboBox1.SelectedIndex;
                 if (IntPtr.Size != 8)
                 {
                     button6.Visible = false;
@@ -82,15 +103,15 @@ namespace Firefox_2_test
                 }
                 if (IntPtr.Size == 8)
                 {
-                    if (File.Exists(@"Firefox ESR x64") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
+                    if (File.Exists(@"Firefox ESR x64\Firefox.exe") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
                     {
                         checkBox2.Enabled = false;
                     }
-                    if (File.Exists(@"Firefox ESR x86") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
+                    if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
                     {
                         checkBox1.Enabled = false;
                     }
-                    if (File.Exists(@"Firefox ESR x86") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe") || File.Exists(@"Firefox ESR x64") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
+                    if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe") || File.Exists(@"Firefox ESR x64") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
                     {
                         checkBox3.Checked = true;
                         CheckButton();
@@ -130,6 +151,30 @@ namespace Firefox_2_test
                 }
             }
             CheckUpdate();
+            foreach (Process proc in Process.GetProcesses())
+            {
+                if (proc.ProcessName.Equals("firefox"))
+                {
+                    switch (culture1.TwoLetterISOLanguageName)
+                    {
+                        case "ru":
+                            {
+                                MessageBox.Show("Необходимо закрыть Mozilla Firefox перед обновлением.", "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
+                        case "de":
+                            {
+                                MessageBox.Show("Bitte schließen Sie den laufenden Mozilla Firefox-Browser, bevor Sie den Browser aktualisieren.", "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
+                        default:
+                            {
+                                MessageBox.Show("Please close the running Mozilla Firefox browser before updating the browser.", "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                return;
+                            }
+                    }
+                }
+            }
         }
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -260,6 +305,8 @@ namespace Firefox_2_test
                     await DownloadFile(0, 2, 2,3);
                     await DownloadFile(0, 3, 3, 4);
                     await DownloadFile(0, 4, 4, 5);
+					checkBox1.Checked = false;
+                    checkBox1.Enabled = false;
                 }
             }
 
@@ -279,6 +326,8 @@ namespace Firefox_2_test
                         await DownloadFile(1, 7, 7, 8);
                         await DownloadFile(1, 8, 8, 9);
                         await DownloadFile(1, 9, 9, 10);
+						checkBox2.Checked = false;
+						checkBox2.Enabled = false;
                     }
                 }
                 await NewMethod2(1, 5, 5, 6);
@@ -290,46 +339,45 @@ namespace Firefox_2_test
         }
         public async Task DownloadFile(int a, int b, int c, int g)
         {
-            Form progessForm = new Form
+            GroupBox progressBox = new GroupBox
             {
-                AutoSize = true,
-                Size = new Size(365, 125),
-                Icon = Resources.Firefox_Updater_32,
-                Text = "Firefox download",
-                StartPosition = FormStartPosition.CenterScreen
+                Location = new Point(groupBox3.Location.X, button12.Location.Y + button12.Size.Height + 5),
+                Size = new Size(groupBox3.Width, 90),
+                BackColor = Color.Lavender,
             };
             Label title = new Label
             {
                 AutoSize = false,
-                Location = new Point(0, 5),
-                Size = new Size(340, 25),
-                Text = "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe",
+                Location = new Point(5, 10),
+                Size = new Size(progressBox.Size.Width - 10, 25),
+                Text = "Firefox " + ring2[c] + " " + buildversion[c] + " " + architektur[a] + " " + lang[comboIndex],
                 TextAlign = ContentAlignment.BottomCenter
             };
-            title.Font = new Font(title.Font.Name, 10F, FontStyle.Bold);
-            progessForm.Controls.Add(title);
+            title.Font = new Font(title.Font.Name, 9.25F, FontStyle.Bold);
             Label downloadLabel = new Label
             {
                 AutoSize = false,
-                Location = new Point(15, 35),
+                Location = new Point(8, 35),
                 Size = new Size(200, 25),
                 TextAlign = ContentAlignment.BottomLeft
             };
-            progessForm.Controls.Add(downloadLabel);
             Label percLabel = new Label
             {
                 AutoSize = false,
-                Location = new Point(235, 35),
+                Location = new Point(progressBox.Size.Width - 108, 35),
                 Size = new Size(100, 25),
                 TextAlign = ContentAlignment.BottomRight
             };
-            progessForm.Controls.Add(percLabel);
             ProgressBar progressBarneu = new ProgressBar
             {
-                Location = new Point(15, 65),
-                Size = new Size(320, 7)
+                Location = new Point(8, 65),
+                Size = new Size(progressBox.Size.Width - 18, 7)
             };
-            progessForm.Controls.Add(progressBarneu);
+            progressBox.Controls.Add(title);
+            progressBox.Controls.Add(downloadLabel);
+            progressBox.Controls.Add(percLabel);
+            progressBox.Controls.Add(progressBarneu);
+            Controls.Add(progressBox);
             List<Task> list = new List<Task>();
             WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[c] + lang[comboIndex]);
             WebResponse myWebResponse = myWebRequest.GetResponse();
@@ -361,8 +409,19 @@ namespace Firefox_2_test
                     }
                     else
                     {
-                            downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacking" : "Entpacken";
-                            string arguments = " x " + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe" + " -o" + @"Update\" + entpDir[b] + " -y";
+                        switch (culture1.TwoLetterISOLanguageName)
+                        {
+                            case "ru":
+                                downloadLabel.Text = "Распаковка";
+                                break;
+                            case "de":
+                                downloadLabel.Text = "Entpacken";
+                                break;
+                            default:
+                                downloadLabel.Text = "Unpacking";
+                                break;
+                        }
+                        string arguments = " x " + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe" + " -o" + @"Update\" + entpDir[b] + " -y";
                             Process process = new Process();
                             process.StartInfo.FileName = @"Bin\7zr.exe";
                             process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
@@ -405,11 +464,21 @@ namespace Firefox_2_test
                         File.Copy(@"Bin\Launcher\" + instDir[b] + " Launcher.exe", @instDir[b] + " Launcher.exe");
                     }
                     File.Delete("Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
-                    downloadLabel.Text = culture1.Name != "de-DE" ? "Unpacked" : "Entpackt";
+                    switch (culture1.TwoLetterISOLanguageName)
+                    {
+                        case "ru":
+                            downloadLabel.Text = "Распакованный";
+                            break;
+                        case "de":
+                            downloadLabel.Text = "Entpackt";
+                            break;
+                        default:
+                            downloadLabel.Text = "Unpacked";
+                            break;
+                    }
                 };
                 try
                 {
-                    progessForm.Show();
                     var task = myWebClient.DownloadFileTaskAsync(uri, "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
                     list.Add(task);
                 }
@@ -420,19 +489,21 @@ namespace Firefox_2_test
             }
             await Task.WhenAll(list);
             await Task.Delay(2000);
-            progessForm.Close();
+            Controls.Remove(progressBox);
         }
         public void Message1()
         {
-            if (culture1.Name != "de-DE")
+            switch (culture1.TwoLetterISOLanguageName)
             {
-                MessageBox.Show("The same version is already installed", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-            else
-            {
-                MessageBox.Show("Die selbe Version ist bereits installiert", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
+                case "ru":
+                    MessageBox.Show("Данная версия уже установлена", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                case "de":
+                    MessageBox.Show("Die selbe Version ist bereits installiert", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                default:
+                    MessageBox.Show("The same version is already installed", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
             }
         }
         public void CheckButton()
@@ -454,13 +525,17 @@ namespace Firefox_2_test
                     }
                     else if (buildversion[i] != instVersion[0])
                     {
-                        if (culture1.Name != "de-DE")
+                        switch (culture1.TwoLetterISOLanguageName)
                         {
-                            button11.Text = "Update all";
-                        }
-                        else
-                        {
-                            button11.Text = "Alle Updaten";
+                            case "ru":
+                                button11.Text = "Обновить все";
+                                break;
+                            case "de":
+                                button11.Text = "Alle Updaten";
+                                break;
+                            default:
+                                button11.Text = "Update all";
+                                break;
                         }
                         button11.Enabled = true;
                         button11.BackColor = Color.FromArgb(224, 224, 224);
@@ -802,86 +877,105 @@ namespace Firefox_2_test
         }
         private void CheckUpdate()
         {
-            Form updateForm = new Form
+            GroupBox groupBoxupdate = new GroupBox
             {
-                Size = new Size(300, 150),
-                ShowIcon = true,
-                Icon = Resources.Firefox_Updater_32,
-                Text = "New Versioninfo",
-                TopMost = true,
-                StartPosition = FormStartPosition.CenterScreen
+                Location = new Point(groupBox3.Location.X, button12.Location.Y + button12.Size.Height + 5),
+                Size = new Size(groupBox3.Width, 90),
+                BackColor = Color.Aqua
             };
             Label versionLabel = new Label
             {
                 AutoSize = false,
                 TextAlign = ContentAlignment.BottomCenter,
                 Dock = DockStyle.None,
-                Location = new Point(0, 35),
-                Size = new Size(280, 25),
+                Location = new Point(2, 30),
+                Size = new Size(groupBoxupdate.Width - 4, 25),
             };
             versionLabel.Font = new Font(versionLabel.Font.Name, 10F, FontStyle.Bold);
-            updateForm.Controls.Add(versionLabel);
             Label infoLabel = new Label
             {
                 AutoSize = false,
                 TextAlign = ContentAlignment.BottomCenter,
                 Dock = DockStyle.None,
-                Location = new Point(0, 10),
-                Size = new Size(284, 25),
-                Text = "Eine neue Version ist verfügbar"
+                Location = new Point(2, 10),
+                Size = new Size(groupBoxupdate.Width - 4, 20),
             };
             infoLabel.Font = new Font(infoLabel.Font.Name, 8.75F);
-            updateForm.Controls.Add(infoLabel);
             Label downLabel = new Label
             {
-                Location = new Point(25, 71),
                 TextAlign = ContentAlignment.MiddleRight,
                 AutoSize = false,
                 Size = new Size(100, 23),
-                Text = "Jetzt Updaten"
             };
-            updateForm.Controls.Add(downLabel);
-           
             Button laterButton = new Button
             {
-                Location = new Point(135, 71),
-                Text = "Nein",
-                Size = new Size(40, 23)
+                Size = new Size(50, 23),
+                BackColor = Color.FromArgb(224, 224, 224)
             };
-            laterButton.Click += new EventHandler(LaterButton_Click);
-            updateForm.Controls.Add(laterButton);
             Button updateButton = new Button
             {
-                Location = new Point(180, 71),
-                Text = "Ja",
-                Size = new Size(40, 23)
+                Location = new Point(groupBoxupdate.Width - Width - 10, 60),
+                Size = new Size(50, 23),
+                BackColor = Color.FromArgb(224, 224, 224)
             };
-            updateForm.Controls.Add(updateButton);
+            updateButton.Location = new Point(groupBoxupdate.Width - updateButton.Width - 10, 60);
+            laterButton.Location = new Point(updateButton.Location.X - laterButton.Width - 5, 60);
+            downLabel.Location = new Point(laterButton.Location.X - downLabel.Width - 20, 60);
+            groupBoxupdate.Controls.Add(updateButton);
+            groupBoxupdate.Controls.Add(laterButton);
+            groupBoxupdate.Controls.Add(downLabel);
+            groupBoxupdate.Controls.Add(infoLabel);
+            groupBoxupdate.Controls.Add(versionLabel);
             updateButton.Click += new EventHandler(UpdateButton_Click);
-            if (culture1.Name != "de-DE")
+            laterButton.Click += new EventHandler(LaterButton_Click);
+            switch (culture1.TwoLetterISOLanguageName)
             {
-                infoLabel.Text = "A new version is available";
-                laterButton.Text = "No";
-                updateButton.Text = "Yes";
-                downLabel.Text = "Update now";
+                case "ru":
+                    infoLabel.Text = "Доступна новая версия";
+                    laterButton.Text = "нет";
+                    updateButton.Text = "Да";
+                    downLabel.Text = "ОБНОВИТЬ";
+                    break;
+                case "de":
+                    infoLabel.Text = "Eine neue Version ist verfügbar";
+                    laterButton.Text = "Nein";
+                    updateButton.Text = "Ja";
+                    downLabel.Text = "Jetzt Updaten";
+                    break;
+                default:
+                    infoLabel.Text = "A new version is available";
+                    laterButton.Text = "No";
+                    updateButton.Text = "Yes";
+                    downLabel.Text = "Update now";
+                    break;
             }
             void LaterButton_Click(object sender, EventArgs e)
             {
-                updateForm.Close();
+                groupBoxupdate.Dispose();
+                Controls.Remove(groupBoxupdate);
+                groupBox3.Enabled = true;
             }
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
-            var response = request.GetResponse();
-            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            try
             {
-                var version = reader.ReadToEnd();
-                versionLabel.Text = version;
-                FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
-                if (Convert.ToDecimal(version) > Convert.ToDecimal(testm.FileVersion))
+                var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+                var response = request.GetResponse();
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    updateForm.Show();
+                    var version = reader.ReadToEnd();
+                    FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
+                    versionLabel.Text = testm.FileVersion + "  >>> " + version;
+                    if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
+                    {
+                        Controls.Add(groupBoxupdate);
+                        groupBox3.Enabled = false;
+                    }
+                    reader.Close();
                 }
-                reader.Close();
+            }
+            catch (Exception)
+            {
+
             }
             void UpdateButton_Click(object sender, EventArgs e)
             {
@@ -912,6 +1006,56 @@ namespace Firefox_2_test
                     process.Start();
                     Close();
                 }
+            }
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            try
+            {
+                var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Version.txt");
+                var response = request.GetResponse();
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    var version = reader.ReadToEnd();
+                    FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Firefox Launcher.exe");
+                    if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
+                    {
+                        reader.Close();
+                        try
+                        {
+                            using (WebClient myWebClient2 = new WebClient())
+                            {
+                                myWebClient2.DownloadFile("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Launcher.7z", @"Launcher.7z");
+                            }
+                            string arguments = " x " + @"Launcher.7z" + " -o" + @"Bin\\Launcher" + " -y";
+                            Process process = new Process();
+                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                            process.StartInfo.Arguments = arguments;
+                            process.Start();
+                            process.WaitForExit();
+                            File.Delete(@"Launcher.7z");
+                            foreach (string launcher in instDir)
+                            {
+                                if (File.Exists(launcher + " Launcher.exe"))
+                                {
+                                    FileVersionInfo binLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\" + launcher + " Launcher.exe");
+                                    FileVersionInfo istLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\" + launcher + " Launcher.exe");
+                                    if (Convert.ToDecimal(binLauncher.FileVersion) > Convert.ToDecimal(istLauncher.FileVersion))
+                                    {
+                                        File.Copy(@"bin\\Launcher\\" + launcher + " Launcher.exe", launcher + " Launcher.exe", true);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
     }
