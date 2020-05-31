@@ -6,6 +6,7 @@ namespace Firefox_Nightly_x64_Launcher
 {
     public partial class Form1 : Form 
     {
+        private readonly string applicationPath = Application.StartupPath;
         private readonly CultureInfo culture = CultureInfo.CurrentUICulture;
         public Form1()
         {
@@ -34,17 +35,17 @@ namespace Firefox_Nightly_x64_Launcher
         {
             if (radioButton1.Checked)
             {
-                File.WriteAllText(@"Firefox Nightly x64\updates\Profile.txt", "-allow-downgrade -no-remote -profile \"profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox Nightly x64\\updates\\Profile.txt", "-allow-downgrade -no-remote -profile \"profile\"");
                 this.Close();
             }
             if (radioButton2.Checked)
             {
-                System.IO.File.WriteAllText(@"Firefox Nightly x64\updates\Profile.txt", "-no-remote -profile \"Firefox Nightly x64\\profile\"");
+                System.IO.File.WriteAllText(applicationPath + "\\Firefox Nightly x64\\updates\\Profile.txt", "-no-remote -profile \"Firefox Nightly x64\\profile\"");
                 this.Close();
             }
             if (radioButton3.Checked)
             {
-                System.IO.File.WriteAllText(@"Firefox Nightly x64\updates\Profile.txt", "");
+                System.IO.File.WriteAllText(applicationPath + "\\Firefox Nightly x64\\updates\\Profile.txt", "");
                 this.Close();
             }
         }

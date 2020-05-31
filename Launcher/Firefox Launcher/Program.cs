@@ -15,7 +15,8 @@ namespace Firefox_Launcher
         static void Main()
         {
             CultureInfo culture1 = CultureInfo.CurrentUICulture;
-            if (File.Exists(@"Firefox\Firefox.exe"))
+            string applicationPath = Application.StartupPath;
+            if (File.Exists(applicationPath + "\\Firefox\\Firefox.exe"))
             {
                 var sb = new System.Text.StringBuilder();
                 string[] CommandLineArgs = Environment.GetCommandLineArgs();
@@ -23,38 +24,53 @@ namespace Firefox_Launcher
                 {
                     if (CommandLineArgs[i].Contains("="))
                     {
-                        string[] test = CommandLineArgs[i].Split(new char[] { '=' }, 2);
-                        sb.Append(" " + test[0] + "=\"" + test[1] + "\"");
+                        if (CommandLineArgs[i].Contains("LinkID"))
+                        {
+                            sb.Append(" " + CommandLineArgs[i]);
+                        }
+                        else if (CommandLineArgs[i].Contains("http"))
+                        {
+                            sb.Append(" \"" + CommandLineArgs[i] + "\"");
+                        }
+                        else
+                        {
+                            string[] test = CommandLineArgs[i].Split(new char[] { '=' }, 2);
+                            sb.Append(" " + test[0] + "=\"" + test[1] + "\"");
+                        }
+                    }
+                    else if (CommandLineArgs[i].Contains(".pdf"))
+                    {
+                        sb.Append(" \"" + CommandLineArgs[i] + "\"");
                     }
                     else
                     {
                         sb.Append(" " + CommandLineArgs[i]);
                     }
                 }
-                if (!File.Exists(@"Firefox\updates\Profile.txt"))
+                if (!File.Exists(applicationPath + "\\Firefox\\updates\\Profile.txt"))
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());
-                    String Arguments = File.ReadAllText(@"Firefox\updates\Profile.txt") + sb.ToString();
-                    _ = Process.Start(@"Firefox\Firefox.exe", Arguments);
+                    String Arguments = File.ReadAllText(applicationPath + "\\Firefox\\updates\\Profile.txt") + sb.ToString();
+                    _ = Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
                 }
                 else
                 {
-                    String Arguments = File.ReadAllText(@"Firefox\updates\Profile.txt") + sb.ToString();
-                    if (File.Exists(@"Firefox\profile\extensions.json"))
+                    String Arguments = File.ReadAllText(applicationPath + "\\Firefox\\updates\\Profile.txt") + sb.ToString();
+                    if (File.Exists(applicationPath + "\\Firefox\\profile\\extensions.json"))
                     {
-                        File.Delete(@"Firefox\profile\extensions.json");
-                        Process.Start(@"Firefox\Firefox.exe", Arguments);
+                        File.Delete(applicationPath + "\\Firefox\\profile\\extensions.json");
+                        Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
                     }
-                    else if (File.Exists(@"profile\extensions.json"))
+                    else if (File.Exists(applicationPath + "\\profile\\extensions.json"))
                     {
-                        File.Delete(@"profile\extensions.json");
-                        Process.Start(@"Firefox\Firefox.exe", Arguments);
+                        File.Delete(applicationPath + "\\profile\\extensions.json");
+                        Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
                     }
                     else
                     {
-                        Process.Start(@"Firefox\Firefox.exe", Arguments);
+                        Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
                     }
 
                 }
