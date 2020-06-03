@@ -53,7 +53,16 @@ namespace Firefox_ESR_x86_Launcher
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());
                     String Arguments = File.ReadAllText(applicationPath + "\\Firefox ESR x86\\updates\\Profile.txt") + sb.ToString();
-                    Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments);
+                    if (Arguments.Contains("\"Firefox"))
+                    {
+                        string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                        string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                        Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments3);
+                    }
+                    else
+                    {
+                        Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments);
+                    }
                 }
                 else
                 {
@@ -61,7 +70,25 @@ namespace Firefox_ESR_x86_Launcher
                     if (File.Exists(applicationPath + "\\Firefox ESR x86\\profile\\extensions.json"))
                     {
                         File.Delete(applicationPath + "\\Firefox ESR x86\\profile\\extensions.json");
-                        Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("\"Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            if (Arguments.Contains("\"Firefox"))
+                            {
+                                string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                                string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                                Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments3);
+                            }
+                            else
+                            {
+                                Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments);
+                            }
+                        }
                     }
                     else if (File.Exists(applicationPath + "\\profile\\extensions.json"))
                     {
@@ -70,7 +97,16 @@ namespace Firefox_ESR_x86_Launcher
                     }
                     else
                     {
-                        Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("\"Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            Process.Start(applicationPath + "\\Firefox ESR x86\\Firefox.exe", Arguments);
+                        }
                     }
                 }
             }

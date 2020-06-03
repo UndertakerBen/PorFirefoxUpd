@@ -53,7 +53,16 @@ namespace Firefox_Launcher
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());
                     String Arguments = File.ReadAllText(applicationPath + "\\Firefox\\updates\\Profile.txt") + sb.ToString();
-                    _ = Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
+                    if (Arguments.Contains("\"Firefox"))
+                    {
+                        string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                        string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                        _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments3);
+                    }
+                    else
+                    {
+                        _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments);
+                    }
                 }
                 else
                 {
@@ -61,16 +70,43 @@ namespace Firefox_Launcher
                     if (File.Exists(applicationPath + "\\Firefox\\profile\\extensions.json"))
                     {
                         File.Delete(applicationPath + "\\Firefox\\profile\\extensions.json");
-                        Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("\"Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments);
+                        }
                     }
                     else if (File.Exists(applicationPath + "\\profile\\extensions.json"))
                     {
                         File.Delete(applicationPath + "\\profile\\extensions.json");
-                        Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments);
+                        }
                     }
                     else
                     {
-                        Process.Start(applicationPath + "\\Firefox\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            _ = Process.Start(applicationPath + "\\\\Firefox\\Firefox.exe", Arguments);
+                        }
                     }
 
                 }

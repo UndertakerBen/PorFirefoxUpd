@@ -53,7 +53,16 @@ namespace Firefox_Nightly_x64_Launcher
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());
                     String Arguments = File.ReadAllText(applicationPath + "\\Firefox Nightly x64\\updates\\Profile.txt") + sb.ToString();
-                    Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                    if (Arguments.Contains("\"Firefox"))
+                    {
+                        string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                        string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                        Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments3);
+                    }
+                    else
+                    {
+                        Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                    }
                 }
                 else
                 {
@@ -61,16 +70,43 @@ namespace Firefox_Nightly_x64_Launcher
                     if (File.Exists(applicationPath + "\\Firefox Nightly x64\\profile\\extensions.json"))
                     {
                         File.Delete(applicationPath + "\\Firefox Nightly x64\\profile\\extensions.json");
-                        Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("\"Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                        }
                     }
                     else if (File.Exists(applicationPath + "\\profile\\extensions.json"))
                     {
                         File.Delete(applicationPath + "\\profile\\extensions.json");
-                        Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("\"Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                        }
                     }
                     else
                     {
-                        Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                        if (Arguments.Contains("\"Firefox"))
+                        {
+                            string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
+                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments3);
+                        }
+                        else
+                        {
+                            Process.Start(applicationPath + "\\Firefox Nightly x64\\Firefox.exe", Arguments);
+                        }
                     }
                 }
             }
