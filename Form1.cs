@@ -8,9 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Collections.Generic;
-using Firefox_Updater.Properties;
 
-namespace Firefox_2_test
+namespace Firefox_Updater
 {
     public partial class Form1 : Form
     {
@@ -61,33 +60,12 @@ namespace Firefox_2_test
                 switch (culture1.TwoLetterISOLanguageName)
                 {
                     case "ru":
-                        button12.Text = "Выход";
-                        button11.Text = "Установить все";
-                        label11.Text = "Установить все версии x86 и/или x64";
-                        checkBox4.Text = "Игнорировать проверку версии";
-                        checkBox3.Text = "Разные версии в отдельных папках";
-                        checkBox5.Text = "Создать ярлык на рабочем столе";
-                        groupBox3.Text = "Выберите желаемый язык";
                         comboBox1.SelectedIndex = Array.IndexOf(lang, "ru");
                         break;
                     case "de":
-                        button12.Text = "Beenden";
-                        button11.Text = "Alle Installieren";
-                        label11.Text = "Alle x86 und oder x64 installieren";
-                        checkBox4.Text = "Versionkontrolle ignorieren";
-                        checkBox3.Text = "Für jede Version einen eigenen Ordner";
-                        checkBox5.Text = "Eine Verknüpfung auf dem Desktop erstellen";
-                        groupBox3.Text = "Wählen Sie die gewünschte Sprache";
                         comboBox1.SelectedIndex = Array.IndexOf(lang, "de");
                         break;
                     default:
-                        button12.Text = "Quit";
-                        button11.Text = "Install all";
-                        label11.Text = "Install all x86 and or x64";
-                        checkBox4.Text = "Ignore version check";
-                        checkBox3.Text = "Create a Folder for each version";
-                        checkBox5.Text = "Create a shortcut on the desktop";
-                        groupBox3.Text = "Select your desired language";
                         comboBox1.SelectedIndex = Array.IndexOf(lang, "en-US");
                         break;
                 }
@@ -155,24 +133,7 @@ namespace Firefox_2_test
             {
                 if (proc.ProcessName.Equals("firefox"))
                 {
-                    switch (culture1.TwoLetterISOLanguageName)
-                    {
-                        case "ru":
-                            {
-                                MessageBox.Show("Необходимо закрыть Mozilla Firefox перед обновлением.", "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                return;
-                            }
-                        case "de":
-                            {
-                                MessageBox.Show("Bitte schließen Sie den laufenden Mozilla Firefox-Browser, bevor Sie den Browser aktualisieren.", "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                return;
-                            }
-                        default:
-                            {
-                                MessageBox.Show("Please close the running Mozilla Firefox browser before updating the browser.", "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                return;
-                            }
-                    }
+                    MessageBox.Show(Langfile.Texts("MeassageRunning"), "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
         }
@@ -409,18 +370,7 @@ namespace Firefox_2_test
                     }
                     else
                     {
-                        switch (culture1.TwoLetterISOLanguageName)
-                        {
-                            case "ru":
-                                downloadLabel.Text = "Распаковка";
-                                break;
-                            case "de":
-                                downloadLabel.Text = "Entpacken";
-                                break;
-                            default:
-                                downloadLabel.Text = "Unpacking";
-                                break;
-                        }
+                        downloadLabel.Text = Langfile.Texts("downUnpstart");
                         string arguments = " x " + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe" + " -o" + @"Update\" + entpDir[b] + " -y";
                             Process process = new Process();
                             process.StartInfo.FileName = @"Bin\7zr.exe";
@@ -464,18 +414,7 @@ namespace Firefox_2_test
                         File.Copy(@"Bin\Launcher\" + instDir[b] + " Launcher.exe", @instDir[b] + " Launcher.exe");
                     }
                     File.Delete("Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
-                    switch (culture1.TwoLetterISOLanguageName)
-                    {
-                        case "ru":
-                            downloadLabel.Text = "Распакованный";
-                            break;
-                        case "de":
-                            downloadLabel.Text = "Entpackt";
-                            break;
-                        default:
-                            downloadLabel.Text = "Unpacked";
-                            break;
-                    }
+                    downloadLabel.Text = Langfile.Texts("downUnpfine");
                 };
                 try
                 {
@@ -493,18 +432,7 @@ namespace Firefox_2_test
         }
         public void Message1()
         {
-            switch (culture1.TwoLetterISOLanguageName)
-            {
-                case "ru":
-                    MessageBox.Show("Данная версия уже установлена", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                case "de":
-                    MessageBox.Show("Die selbe Version ist bereits installiert", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-                default:
-                    MessageBox.Show("The same version is already installed", "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return;
-            }
+            MessageBox.Show(Langfile.Texts("MeassageVersion"), "Portabel Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
         }
         public void CheckButton()
         {
@@ -525,18 +453,7 @@ namespace Firefox_2_test
                     }
                     else if (buildversion[i] != instVersion[0])
                     {
-                        switch (culture1.TwoLetterISOLanguageName)
-                        {
-                            case "ru":
-                                button11.Text = "Обновить все";
-                                break;
-                            case "de":
-                                button11.Text = "Alle Updaten";
-                                break;
-                            default:
-                                button11.Text = "Update all";
-                                break;
-                        }
+                        button11.Text = Langfile.Texts("Button11UAll");
                         button11.Enabled = true;
                         button11.BackColor = Color.FromArgb(224, 224, 224);
                         if (buttons.Length > 0)
@@ -654,23 +571,23 @@ namespace Firefox_2_test
         }
         private void Button6_MouseHover(object sender, EventArgs e)
         {
-            NewMethod7(0, "x64", 6);
+            NewMethod7(5, "x64", 6);
         }
         private void Button7_MouseHover(object sender, EventArgs e)
         {
-            NewMethod7(1, "x64", 7);
+            NewMethod7(6, "x64", 7);
         }
         private void Button8_MouseHover(object sender, EventArgs e)
         {
-            NewMethod7(2, "x64", 8);
+            NewMethod7(7, "x64", 8);
         }
         private void Button9_MouseHover(object sender, EventArgs e)
         {
-            NewMethod7(3, "x64", 9);
+            NewMethod7(8, "x64", 9);
         }
         private void Button10_MouseHover(object sender, EventArgs e)
         {
-            NewMethod7(4, "x64", 10);
+            NewMethod7(9, "x64", 10);
         }
         private void Button11_EnabledChanged(object sender, EventArgs e)
         {
@@ -928,27 +845,10 @@ namespace Firefox_2_test
             groupBoxupdate.Controls.Add(versionLabel);
             updateButton.Click += new EventHandler(UpdateButton_Click);
             laterButton.Click += new EventHandler(LaterButton_Click);
-            switch (culture1.TwoLetterISOLanguageName)
-            {
-                case "ru":
-                    infoLabel.Text = "Доступна новая версия";
-                    laterButton.Text = "нет";
-                    updateButton.Text = "Да";
-                    downLabel.Text = "ОБНОВИТЬ";
-                    break;
-                case "de":
-                    infoLabel.Text = "Eine neue Version ist verfügbar";
-                    laterButton.Text = "Nein";
-                    updateButton.Text = "Ja";
-                    downLabel.Text = "Jetzt Updaten";
-                    break;
-                default:
-                    infoLabel.Text = "A new version is available";
-                    laterButton.Text = "No";
-                    updateButton.Text = "Yes";
-                    downLabel.Text = "Update now";
-                    break;
-            }
+            infoLabel.Text = Langfile.Texts("infoLabel");
+            laterButton.Text = Langfile.Texts("laterButton"); ;
+            updateButton.Text = Langfile.Texts("updateButton"); ;
+            downLabel.Text = Langfile.Texts("downLabel"); ;
             void LaterButton_Click(object sender, EventArgs e)
             {
                 groupBoxupdate.Dispose();
@@ -1050,6 +950,408 @@ namespace Firefox_2_test
                         {
 
                         }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        private void VersionInfo_Click(object sender, EventArgs e)
+        {
+            FileVersionInfo updVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
+            FileVersionInfo launcherVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Firefox Launcher.exe");
+            MessageBox.Show("Updater Version - " + updVersion.FileVersion + "\nLauncher Version - " + launcherVersion.FileVersion, "Version Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void RegistrierenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[10]);
+        }
+
+        private void RegistrierenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[9]);
+        }
+
+        private void RegistrierenToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[4]);
+        }
+
+        private void RegistrierenToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[3]);
+        }
+
+        private void RegistrierenToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[8]);
+        }
+
+        private void RegistrierenToolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[2]);
+        }
+
+        private void RegistrierenToolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[7]);
+        }
+
+        private void RegistrierenToolStripMenuItem7_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[1]);
+        }
+
+        private void RegistrierenToolStripMenuItem8_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[6]);
+        }
+
+        private void RegistrierenToolStripMenuItem9_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[0]);
+        }
+
+        private void RegistrierenToolStripMenuItem10_Click(object sender, EventArgs e)
+        {
+            Regfile.RegCreate(applicationPath, instDir[5]);
+        }
+
+        private void EntfernenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem1.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem2.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem3.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem4.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem5.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem6.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem7_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem7.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem8_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem8.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem9_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem9.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void EntfernenToolStripMenuItem10_Click(object sender, EventArgs e)
+        {
+            registrierenToolStripMenuItem10.Enabled = true;
+            Regfile.RegDel();
+        }
+
+        private void ExtrasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Microsoft.Win32.RegistryKey key;
+                if (Microsoft.Win32.Registry.GetValue("HKEY_Current_User\\Software\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE", default, null) != null)
+                {
+                    key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE", false);
+                    switch (key.GetValue(default).ToString())
+                    {
+                        case "Mozilla Firefox Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem1.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Stable x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem2.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Stable x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Beta x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem3.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Beta x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem4.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Dev x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem5.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Dev x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem6.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Nightly x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem7.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox Nightly x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem8.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox ESR x86 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem7.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            break;
+                        case "Mozilla Firefox ESR x64 Portable":
+                            key.Close();
+                            registrierenToolStripMenuItem8.Enabled = false;
+                            firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                            firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                            break;
+                    }
+                }
+                else
+                {
+                    if (Directory.Exists(@"Firefox"))
+                    {
+                        firefoxAlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Stable x86"))
+                    {
+                        firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Stable x64"))
+                    {
+                        firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Beta x86"))
+                    {
+                        firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Beta x64"))
+                    {
+                        firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Dev x86"))
+                    {
+                        firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Dev x64"))
+                    {
+                        firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Nightly x86"))
+                    {
+                        firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox Nightly x64"))
+                    {
+                        firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox ESR x86"))
+                    {
+                        firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
+                    }
+                    if (Directory.Exists(@"Firefox ESR x64"))
+                    {
+                        firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
+                    }
+                    else
+                    {
+                        firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
                     }
                 }
             }

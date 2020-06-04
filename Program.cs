@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
-namespace Firefox_2_test
+
+namespace Firefox_Updater
 {
     static class Program
     {
