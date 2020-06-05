@@ -83,14 +83,8 @@ namespace Firefox_Updater
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\DefaultIcon");
             key.SetValue("ApplicationIcon", applicationPath + @"\" + instDir + @"\firefox.exe,0");
             key.Close();
-            //key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\InstallInfo");
-            //key.SetValue("ReinstallCommand", "\"" + applicationPath + @"\\" + instDir + @" Launcher.exe"" --make-default-browser");
-            //key.SetValue("HideIconsCommand", "\"" + applicationPath + @"\\" + instDir + @" Launcher.exe"" --hide-icons");
-            //key.SetValue("ShowIconsCommand", "\"" + applicationPath + @"\\" + instDir + @" Launcher.exe"" --show-icons");
-            //key.SetValue("IconsVisible", 1, Microsoft.Win32.RegistryValueKind.DWord);
-            //key.Close();
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\shell\\open\\command");
-            key.SetValue(default, "\"" + applicationPath + @"\" + instDir + @" Launcher.exe"" \""%1\""");
+            key.SetValue(default, "\"" + applicationPath + @"\" + instDir + @" Launcher.exe"" ""%1""");
             key.Close();
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\Classes\\.xhtml\\OpenWithProgids");
             key.SetValue("FirefoxHTML.PORTABLE", "");
@@ -117,7 +111,7 @@ namespace Firefox_Updater
             key.SetValue("FirefoxHTML.PORTABLE", "");
             key.Close();
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\firefox.exe");
-            key.SetValue(default, "\"" + applicationPath + @"\" + instDir + @" Launcher.exe"" ""%1""");
+            key.SetValue(default, "\"" + applicationPath + @"\" + instDir + @" Launcher.exe""");
             key.SetValue("Path", applicationPath);
             key.Close();
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ApplicationAssociationToasts");
@@ -190,7 +184,6 @@ namespace Firefox_Updater
                 Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\shell\\open", false);
                 Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\shell", false);
                 Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\DefaultIcon", false);
-                //Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\InstallInfo", false);
                 Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\Capabilities\\Startmenu", false);
                 Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\Capabilities\\URLAssociations", false);
                 Microsoft.Win32.Registry.CurrentUser.DeleteSubKeyTree("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE", false);

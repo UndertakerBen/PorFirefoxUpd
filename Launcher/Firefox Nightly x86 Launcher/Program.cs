@@ -53,10 +53,10 @@ namespace Firefox_Nightly_x86_Launcher
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new Form1());
                     String Arguments = File.ReadAllText(applicationPath + "\\Firefox Nightly x86\\updates\\Profile.txt") + sb.ToString();
-                    if (Arguments.Contains("\"Firefox"))
+                    if (Arguments.Contains("-profile \"Firefox"))
                     {
                         string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
-                        string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                        string Arguments3 = Arguments2[0].Replace("-no-remote ", "") + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
                         Process.Start(applicationPath + "\\Firefox Nightly x86\\Firefox.exe", Arguments3);
                     }
                     else
@@ -70,10 +70,10 @@ namespace Firefox_Nightly_x86_Launcher
                     if (File.Exists(applicationPath + "\\Firefox Nightly x86\\profile\\extensions.json"))
                     {
                         File.Delete(applicationPath + "\\Firefox Nightly x86\\profile\\extensions.json");
-                        if (Arguments.Contains("\"Firefox"))
+                        if (Arguments.Contains("-profile \"Firefox"))
                         {
                             string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
-                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            string Arguments3 = Arguments2[0].Replace("-no-remote ", "") + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
                             Process.Start(applicationPath + "\\Firefox Nightly x86\\Firefox.exe", Arguments3);
                         }
                         else
@@ -84,10 +84,10 @@ namespace Firefox_Nightly_x86_Launcher
                     else if (File.Exists(applicationPath + "\\profile\\extensions.json"))
                     {
                         File.Delete(applicationPath + "\\profile\\extensions.json");
-                        if (Arguments.Contains("\"Firefox"))
+                        if (Arguments.Contains("-profile \"Firefox"))
                         {
                             string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
-                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            string Arguments3 = Arguments2[0].Replace("-no-remote ", "") + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
                             Process.Start(applicationPath + "\\Firefox Nightly x86\\Firefox.exe", Arguments3);
                         }
                         else
@@ -97,10 +97,10 @@ namespace Firefox_Nightly_x86_Launcher
                     }
                     else
                     {
-                        if (Arguments.Contains("\"Firefox"))
+                        if (Arguments.Contains("-profile \"Firefox"))
                         {
                             string[] Arguments2 = Arguments.Split(new char[] { '"' }, 3);
-                            string Arguments3 = Arguments2[0] + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
+                            string Arguments3 = Arguments2[0].Replace("-no-remote ", "") + "\"" + applicationPath + "\\" + Arguments2[1] + "\"" + Arguments2[2];
                             Process.Start(applicationPath + "\\Firefox Nightly x86\\Firefox.exe", Arguments3);
                         }
                         else

@@ -35,12 +35,12 @@ namespace Firefox_Dev_x86_Launcher
         {
             if (radioButton1.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox Dev x86\\updates\\Profile.txt", "-allow-downgrade -no-remote -profile \"profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox Dev x86\\updates\\Profile.txt", "-allow-downgrade -profile \"profile\"");
                 this.Close();
             }
             if (radioButton2.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox Dev x86\\updates\\Profile.txt", "-no-remote -profile \"Firefox Dev x86\\profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox Dev x86\\updates\\Profile.txt", "-profile \"Firefox Dev x86\\profile\"");
                 this.Close();
             }
             if (radioButton3.Checked)
