@@ -57,7 +57,7 @@ namespace Firefox_Updater
             key.SetValue(default, "Mozilla " + instDir + @" Portable");
             key.Close();
             key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\Clients\\StartMenuInternet\\Mozilla Firefox.PORTABLE\\Capabilities");
-            key.SetValue("ApplicationDescription", "Firefox ermöglicht sicheres und einfaches Surfen. Mit einer gewohnten Oberfläche, verbesserten Sicherheitsfunktionen, inklusive Schutz vor Identitätsdiebstahl und integrierter Suche holen Sie mehr aus dem Web.");
+            key.SetValue("ApplicationDescription", Langfile.Texts("AppDescriptFull"));
             key.SetValue("ApplicationIcon", applicationPath + @"\" + instDir + @"\firefox.exe,0");
             key.SetValue("ApplicationName", "Mozilla " + instDir + @" Portable");
             key.Close();
