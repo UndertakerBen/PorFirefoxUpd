@@ -35,12 +35,12 @@ namespace Firefox_Launcher
         {
             if (radioButton1.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox\\updates\\Profile.txt", "-allow-downgrade -no-remote -profile \"profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox\\updates\\Profile.txt", "-allow-downgrade -profile \"profile\"");
                 this.Close();
             }
             if (radioButton2.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox\\updates\\Profile.txt", "-no-remote -profile \"Firefox\\profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox\\updates\\Profile.txt", "-profile \"Firefox\\profile\"");
                 this.Close();
             }
             if (radioButton3.Checked)

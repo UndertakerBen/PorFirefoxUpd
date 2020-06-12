@@ -35,12 +35,12 @@ namespace Firefox_Stable_x64_Launcher
         {
             if (radioButton1.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox Stable x64\\updates\\Profile.txt", "-allow-downgrade -no-remote -profile \"profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox Stable x64\\updates\\Profile.txt", "-allow-downgrade -profile \"profile\"");
                 this.Close();
             }
             if (radioButton2.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox Stable x64\\updates\\Profile.txt", "-no-remote -profile \"Firefox Stable x64\\profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox Stable x64\\updates\\Profile.txt", "-profile \"Firefox Stable x64\\profile\"");
                 this.Close();
             }
             if (radioButton3.Checked)

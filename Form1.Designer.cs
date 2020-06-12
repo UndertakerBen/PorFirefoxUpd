@@ -403,7 +403,7 @@ namespace Firefox_Updater
             // 
             // comboBox1
             // 
-            this.comboBox1.DropDownHeight = 80;
+            this.comboBox1.DropDownHeight = 300;
             this.comboBox1.DropDownWidth = 250;
             this.comboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.comboBox1.FormattingEnabled = true;

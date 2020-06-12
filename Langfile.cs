@@ -7,267 +7,156 @@ namespace Firefox_Updater
     {
         public static string Texts(string langText)
         {
-            CultureInfo culture1 = CultureInfo.CurrentUICulture;
+			CultureInfo culture1 = CultureInfo.CurrentUICulture;
             switch (culture1.TwoLetterISOLanguageName)
             {
                 case "ru":
-                    if (langText == "Button12")
-                    {
-                        return "Выход";
-                    }
-                    else if (langText == "Button11")
-                    {
-                        return "Установить все";
-                    }
-                    else if (langText == "Button11UAll")
-                    {
-                        return "Обновить все";
-                    }
-                    else if (langText == "Label11")
-                    {
-                        return "Установить все версии x86 и/или x64";
-                    }
-                    else if (langText == "checkBox4")
-                    {
-                        return "Игнорировать проверку версии";
-                    }
-                    else if (langText == "checkBox3")
-                    {
-                        return "Разные версии в отдельных папках";
-                    }
-                    else if (langText == "checkBox5")
-                    {
-                        return "Создать ярлык на рабочем столе";
-                    }
-                    else if (langText == "GBox3")
-                    {
-                        return "Выберите желаемый язык";
-                    }
-                    else if (langText == "downUnpstart")
-                    {
-                        return "Распаковка";
-                    }
-                    else if (langText == "downUnpfine")
-                    {
-                        return "Распакованный";
-                    }
-                    else if (langText == "infoLabel")
-                    {
-                        return "Доступна новая версия";
-                    }
-                    else if (langText == "laterButton")
-                    {
-                        return "нет";
-                    }
-                    else if (langText == "updateButton")
-                    {
-                        return "Да";
-                    }
-                    else if (langText == "downLabel")
-                    {
-                        return "ОБНОВИТЬ";
-                    }
-                    else if (langText == "MeassageVersion")
-                    {
-                        return "Данная версия уже установлена";
-                    }
-                    else if (langText == "MeassageRunning")
-                    {
-                        return "Необходимо закрыть Mozilla Firefox перед обновлением.";
-                    }
-                    else if (langText == "Register")
-                    {
-                        return "регистр";
-                    }
-                    else if (langText == "Remove")
-                    {
-                        return "Удалить";
-                    }
-                    else if (langText == "Browser")
-                    {
-                        return " как браузер по умолчанию";
-                    }
-                    else if (langText == "Extra")
-                    {
-                        return "отде́льно";
-                    }
-                    else if (langText == "VInfo")
-                    {
-                        return "О версиях";
-                    }
-                    break;
+					switch (langText)
+					{
+						case "Button12":
+							return "Выход";
+						case "Button11":
+							return "Установить все";
+						case "Button11UAll":
+							return "Обновить все";
+						case "Label11":
+							return "Установить все версии x86 и/или x64";
+						case "checkBox4":
+							return "Игнорировать проверку версии";
+						case "checkBox3":
+							return "Разные версии в отдельных папках";
+						case "checkBox5":
+							return "Создать ярлык на рабочем столе";
+						case "GBox3":
+							return "Выберите желаемый язык";
+						case "downUnpstart":
+							return "Распаковка";
+						case "downUnpfine":
+							return "Распакованный";
+						case "infoLabel":
+							return "Доступна новая версия";
+						case "laterButton":
+							return "нет";
+						case "updateButton":
+							return "Да";
+						case "downLabel":
+							return "ОБНОВИТЬ";
+						case "MeassageVersion":
+							return "Данная версия уже установлена";
+						case "MeassageRunning":
+							return "Необходимо закрыть Mozilla Firefox перед обновлением.";
+						case "Register":
+							return "регистр";
+						case "Remove":
+							return "Удалить";
+						case "Browser":
+							return " как браузер по умолчанию";
+						case "Extra":
+							return "отде́льно";
+						case "VInfo":
+							return "О версиях";
+						case "AppDescriptFull":
+							return "Firefox обеспечивает вам легкую и безопасную работу с веб-сайтами.Знакомый интерфейс пользователя, улучшенная система безопасности, в том числе защита от кражи личной информации, и интегрированная система поиска позволяют вам добиться максимальной отдачи от Интернета.";
+					}
+					break;
                 case "de":
-                    if (langText == "Button12")
-                    {
-                        return "Beenden";
-                    }
-                    else if (langText == "Button11")
-                    {
-                        return "Alle Installieren";
-                    }
-                    else if (langText == "Button11UAll")
-                    {
-                        return "Alle Updaten";
-                    }
-                    else if (langText == "Label11")
-                    {
-                        return "Alle x86 und oder x64 installieren";
-                    }
-                    else if (langText == "checkBox4")
-                    {
-                        return "Versionkontrolle ignorieren";
-                    }
-                    else if (langText == "checkBox3")
-                    {
-                        return "Für jede Version einen eigenen Ordner";
-                    }
-                    else if (langText == "checkBox5")
-                    {
-                        return "Eine Verknüpfung auf dem Desktop erstellen";
-                    }
-                    else if (langText == "GBox3")
-                    {
-                        return "Wählen Sie die gewünschte Sprache";
-                    }
-                    else if (langText == "downUnpstart")
-                    {
-                        return "Entpacken";
-                    }
-                    else if (langText == "downUnpfine")
-                    {
-                        return "Entpackt";
-                    }
-                    else if (langText == "infoLabel")
-                    {
-                        return "Eine neue Version ist verfügbar";
-                    }
-                    else if (langText == "laterButton")
-                    {
-                        return "Nein";
-                    }
-                    else if (langText == "updateButton")
-                    {
-                        return "Ja";
-                    }
-                    else if (langText == "downLabel")
-                    {
-                        return "Update now";
-                    }
-                    else if (langText == "MeassageVersion")
-                    {
-                        return "Die selbe Version ist bereits installiert";
-                    }
-                    else if (langText == "MeassageRunning")
-                    {
-                        return "Bitte schließen Sie den laufenden Mozilla Firefox-Browser, bevor Sie den Browser aktualisieren.";
-                    }
-                    else if (langText == "Register")
-                    {
-                        return "Registrieren";
-                    }
-                    else if (langText == "Remove")
-                    {
-                        return "Entfernen";
-                    }
-                    else if (langText == "Browser")
-                    {
-                        return " als Standardbrowser";
-                    }
-                    else if (langText == "Extra")
-                    {
-                        return "Extras";
-                    }
-                    else if (langText == "VInfo")
-                    {
-                        return "Versions Info";
-                    }
+					switch (langText)
+					{
+						case "Button12":
+							return "Beenden";
+						case "Button11":
+							return "Alle Installieren";
+						case "Button11UAll":
+							return "Alle Updaten";
+						case "Label11":
+							return "Alle x86 und oder x64 installieren";
+						case "checkBox4":
+							return "Versionkontrolle ignorieren";
+						case "checkBox3":
+							return "Für jede Version einen eigenen Ordner";
+						case "checkBox5":
+							return "Eine Verknüpfung auf dem Desktop erstellen";
+						case "GBox3":
+							return "Wählen Sie die gewünschte Sprache";
+						case "downUnpstart":
+							return "Entpacken";
+						case "downUnpfine":
+							return "Entpackt";
+						case "infoLabel":
+							return "Eine neue Version ist verfügbar";
+						case "laterButton":
+							return "Nein";
+						case "updateButton":
+							return "Ja";
+						case "downLabel":
+							return "Jetzt Updaten";
+						case "MeassageVersion":
+							return "Die selbe Version ist bereits installiert";
+						case "MeassageRunning":
+							return "Bitte schließen Sie den laufenden Mozilla Firefox-Browser, bevor Sie den Browser aktualisieren.";
+						case "Register":
+							return "Registrieren";
+						case "Remove":
+							return "Entfernen";
+						case "Browser":
+							return " als Standardbrowser";
+						case "Extra":
+							return "Extras";
+						case "VInfo":
+							return "Versions Info";
+						case "AppDescriptFull":
+							return "Firefox ermöglicht sicheres und einfaches Surfen. Mit einer gewohnten Oberfläche, verbesserten Sicherheitsfunktionen, inklusive Schutz vor Identitätsdiebstahl und integrierter Suche holen Sie mehr aus dem Web.";
+					}
                     break;
                 default:
-                    if (langText == "Button12")
-                    {
-                        return "Quit";
-                    }
-                    else if (langText == "Button11")
-                    {
-                        return "Install all";
-                    }
-                    else if (langText == "Button11UAll")
-                    {
-                        return "Update all";
-                    }
-                    else if (langText == "Label11")
-                    {
-                        return "Install all x86 and or x64";
-                    }
-                    else if (langText == "checkBox4")
-                    {
-                        return "Ignore version check";
-                    }
-                    else if (langText == "checkBox3")
-                    {
-                        return "Create a Folder for each version";
-                    }
-                    else if (langText == "checkBox5")
-                    {
-                        return "Create a shortcut on the desktop";
-                    }
-                    else if (langText == "GBox3")
-                    {
-                        return "Select your desired language";
-                    }
-                    else if (langText == "downUnpstart")
-                    {
-                        return "Unpacking";
-                    }
-                    else if (langText == "downUnpfine")
-                    {
-                        return "Unpacked";
-                    }
-                    else if (langText == "infoLabel")
-                    {
-                        return "A new version is available";
-                    }
-                    else if (langText == "laterButton")
-                    {
-                        return "No";
-                    }
-                    else if (langText == "updateButton")
-                    {
-                        return "Yes";
-                    }
-                    else if (langText == "downLabel")
-                    {
-                        return "Update now";
-                    }
-                    else if (langText == "MeassageVersion")
-                    {
-                        return "The same version is already installed";
-                    }
-                    else if (langText == "MeassageRunning")
-                    {
-                        return "Please close the running Mozilla Firefox browser before updating the browser.";
-                    }
-                    else if (langText == "Register")
-                    {
-                        return "Register";
-                    }
-                    else if (langText == "Remove")
-                    {
-                        return "Remove";
-                    }
-                    else if (langText == "Edge")
-                    {
-                        return " as default browser";
-                    }
-                    else if (langText == "Extra")
-                    {
-                        return "Extras";
-                    }
-                    else if (langText == "VInfo")
-                    {
-                        return "Version Info";
-                    }
-                    break;
+					switch (langText)
+					{
+						case "Button12":
+							return "Quit";
+						case "Button11":
+							return "Install all";
+						case "Button11UAll":
+							return "Update all";
+						case "Label11":
+							return "Install all x86 and or x64";
+						case "checkBox4":
+							return "Ignore version check";
+						case "checkBox3":
+							return "Create a Folder for each version";
+						case "checkBox5":
+							return "Create a shortcut on the desktop";
+						case "GBox3":
+							return "Select your desired language";
+						case "downUnpstart":
+							return "Unpacking";
+						case "downUnpfine":
+							return "Unpacked";
+						case "infoLabel":
+							return "A new version is available";
+						case "laterButton":
+							return "No";
+						case "updateButton":
+							return "Yes";
+						case "downLabel":
+							return "Update now";
+						case "MeassageVersion":
+							return "The same version is already installed";
+						case "MeassageRunning":
+							return "Please close the running Mozilla Firefox browser before updating the browser.";
+						case "Register":
+							return "Register";
+						case "Remove":
+							return "Remove";
+						case "Browser":
+							return " as default browser";
+						case "Extra":
+							return "Extras";
+						case "VInfo":
+							return "Version Info";
+						case "AppDescriptFull":
+							return "Firefox delivers safe, easy web browsing. A familiar user interface, enhanced security features including protection from online identity theft, and integrated search let you get the most out of the web.";
+					}
+					break;
             }
             return "";
         }

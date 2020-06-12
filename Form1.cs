@@ -27,113 +27,163 @@ namespace Firefox_Updater
         readonly WebClient myWebClient = new WebClient();
         readonly CultureInfo culture1 = CultureInfo.CurrentUICulture;
         public int comboIndex;
+		public static class ProxyClass
+        {
+            public static WebProxy ProxyServer = null;
+        }
         public Form1()
         {
             InitializeComponent();
-            for (int i = 0; i <= 4; i++)
+            if (File.Exists(applicationPath + "\\Proxy.ini"))
             {
-                WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[i] + "de");
-                WebResponse myWebResponse = myWebRequest.GetResponse();
-                myWebResponse.Close();
-                if (i == 1)
+                string proxyurl = File.ReadAllText(applicationPath + "\\Proxy.ini");
+                NewMethod10(proxyurl);
+            }
+            foreach (string arg in Environment.GetCommandLineArgs())
+            {
+                if (arg.StartsWith("--proxy="))
                 {
-                    string version = myWebResponse.ResponseUri.ToString();
-                    string[] istVersion = version.Substring(version.IndexOf("firefox-")).Split(new char[] { '-', '.' });
-                    buildversion[i] = istVersion[1] + "." + istVersion[2];
-                    buildversion[i + 5] = istVersion[1] + "." + istVersion[2];
+                    string proxyurl = arg.Substring(8);
+                    NewMethod10(proxyurl);
+                }
+            }
+            try
+            {
+                WebRequest myWebRequestTest = WebRequest.Create("https://download.mozilla.org/?");
+                myWebRequestTest.Timeout = 2000;
+                myWebRequestTest.Proxy = ProxyClass.ProxyServer;
+                WebResponse myWebResponseTest = myWebRequestTest.GetResponse();
+                if (((HttpWebResponse)myWebResponseTest).StatusCode == HttpStatusCode.OK)
+                {
+                    myWebResponseTest.Close();
                 }
                 else
                 {
-                    string version = myWebResponse.ResponseUri.ToString();
-                    string[] istVersion = version.Substring(version.IndexOf("releases")).Split(new char[] { '/' });
-                    buildversion[i] = istVersion[1];
-                    buildversion[i + 5] = istVersion[1];
+                    myWebResponseTest.Close();
+                    Environment.Exit(253);
                 }
-                label6.Text = buildversion[0];
-                label7.Text = buildversion[1];
-                label8.Text = buildversion[2];
-                label9.Text = buildversion[3];
-                label10.Text = buildversion[4];
-                button11.Enabled = false;
-                checkBox1.Enabled = false;
-                checkBox2.Enabled = false;
-                switch (culture1.TwoLetterISOLanguageName)
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: \n\r" + ex.Message);
+                Environment.Exit(254);
+            }
+            try
+            {
+                for (int i = 0; i <= 4; i++)
                 {
-                    case "ru":
-                        comboBox1.SelectedIndex = Array.IndexOf(lang, "ru");
-                        break;
-                    case "de":
-                        comboBox1.SelectedIndex = Array.IndexOf(lang, "de");
-                        break;
-                    default:
-                        comboBox1.SelectedIndex = Array.IndexOf(lang, "en-US");
-                        break;
-                }
-                comboIndex = comboBox1.SelectedIndex;
-                if (IntPtr.Size != 8)
-                {
-                    button6.Visible = false;
-                    button7.Visible = false;
-                    button8.Visible = false;
-                    button9.Visible = false;
-                    button10.Visible = false;
-                    checkBox2.Visible = false;
-                }
-                if (IntPtr.Size == 8)
-                {
-                    if (File.Exists(@"Firefox ESR x64\Firefox.exe") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
+                    WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[i] + "de");
+                    myWebRequest.Proxy = ProxyClass.ProxyServer;
+                    WebResponse myWebResponse = myWebRequest.GetResponse();
+                    myWebResponse.Close();
+                    if (i == 1)
                     {
-                        checkBox2.Enabled = false;
+                        string version = myWebResponse.ResponseUri.ToString();
+                        string[] istVersion = version.Substring(version.IndexOf("firefox-")).Split(new char[] { '-', '.' });
+                        buildversion[i] = istVersion[1] + "." + istVersion[2];
+                        buildversion[i + 5] = istVersion[1] + "." + istVersion[2];
                     }
-                    if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
+                    else
                     {
-                        checkBox1.Enabled = false;
-                    }
-                    if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe") || File.Exists(@"Firefox ESR x64") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
-                    {
-                        checkBox3.Checked = true;
-                        CheckButton();
-                    }
-                    else if (!checkBox3.Checked)
-                    {
-                        checkBox1.Enabled = false;
-                        checkBox2.Enabled = false;
-                        button11.Enabled = false;
-                        button11.BackColor = Color.FromArgb(244, 244, 244);
-
-                        if (File.Exists(@"Firefox\Firefox.exe"))
-                        {
-                            CheckButton2();
-                        }
-                    }
-                }
-                else if (IntPtr.Size != 8)
-                {
-                    if (File.Exists(@"Firefox ESR x86") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
-                    {
-                        checkBox3.Checked = true;
-                        checkBox1.Enabled = false;
-                        CheckButton();
-                    }
-                    else if (!checkBox3.Checked)
-                    {
-                        checkBox1.Enabled = false;
-                        button11.Enabled = false;
-                        button11.BackColor = Color.FromArgb(244, 244, 244);
-
-                        if (File.Exists(@"Firefox\Firefox.exe"))
-                        {
-                            CheckButton2();
-                        }
+                        string version = myWebResponse.ResponseUri.ToString();
+                        string[] istVersion = version.Substring(version.IndexOf("releases")).Split(new char[] { '/' });
+                        buildversion[i] = istVersion[1];
+                        buildversion[i + 5] = istVersion[1];
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: \n\r" + ex.Message);
+                Environment.Exit(255);
+            }
+
+            label6.Text = buildversion[0];
+            label7.Text = buildversion[1];
+            label8.Text = buildversion[2];
+            label9.Text = buildversion[3];
+            label10.Text = buildversion[4];
+            button11.Enabled = false;
+            checkBox1.Enabled = false;
+            checkBox2.Enabled = false;
+            switch (culture1.TwoLetterISOLanguageName)
+            {
+                case "ru":
+                    comboBox1.SelectedIndex = Array.IndexOf(lang, "ru");
+                    break;
+                case "de":
+                    comboBox1.SelectedIndex = Array.IndexOf(lang, "de");
+                    break;
+                default:
+                    comboBox1.SelectedIndex = Array.IndexOf(lang, "en-US");
+                    break;
+            }
+            comboIndex = comboBox1.SelectedIndex;
+            if (IntPtr.Size != 8)
+            {
+                button6.Visible = false;
+                button7.Visible = false;
+                button8.Visible = false;
+                button9.Visible = false;
+                button10.Visible = false;
+                checkBox2.Visible = false;
+            }
+            if (IntPtr.Size == 8)
+            {
+                if (File.Exists(@"Firefox ESR x64\Firefox.exe") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
+                {
+                    checkBox2.Enabled = false;
+                }
+                if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
+                {
+                    checkBox1.Enabled = false;
+                }
+                if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe") || File.Exists(@"Firefox ESR x64") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
+                {
+                    checkBox3.Checked = true;
+                    CheckButton();
+                }
+                else if (!checkBox3.Checked)
+                {
+                    checkBox1.Enabled = false;
+                    checkBox2.Enabled = false;
+                    button11.Enabled = false;
+                    button11.BackColor = Color.FromArgb(244, 244, 244);
+
+                    if (File.Exists(@"Firefox\Firefox.exe"))
+                    {
+                        CheckButton2();
+                    }
+                }
+            }
+            else if (IntPtr.Size != 8)
+            {
+                if (File.Exists(@"Firefox ESR x86") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
+                {
+                    checkBox3.Checked = true;
+                    checkBox1.Enabled = false;
+                    CheckButton();
+                }
+                else if (!checkBox3.Checked)
+                {
+                    checkBox1.Enabled = false;
+                    button11.Enabled = false;
+                    button11.BackColor = Color.FromArgb(244, 244, 244);
+
+                    if (File.Exists(@"Firefox\Firefox.exe"))
+                    {
+                        CheckButton2();
+                    }
+                }
+            }
+            //}
             CheckUpdate();
             foreach (Process proc in Process.GetProcesses())
             {
                 if (proc.ProcessName.Equals("firefox"))
                 {
                     MessageBox.Show(Langfile.Texts("MeassageRunning"), "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
                 }
             }
         }
@@ -339,96 +389,107 @@ namespace Firefox_Updater
             progressBox.Controls.Add(percLabel);
             progressBox.Controls.Add(progressBarneu);
             Controls.Add(progressBox);
-            List<Task> list = new List<Task>();
-            WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[c] + lang[comboIndex]);
-            WebResponse myWebResponse = myWebRequest.GetResponse();
-            Uri uri = new Uri(myWebResponse.ResponseUri.ToString());
-            ServicePoint sp = ServicePointManager.FindServicePoint(uri);
-            sp.ConnectionLimit = 10;
-            myWebResponse.Close();
-            using (WebClient myWebClient = new WebClient())
+            try
             {
-                myWebClient.DownloadProgressChanged += (o, args) =>
+                List<Task> list = new List<Task>();
+                WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[c] + lang[comboIndex]);
+                myWebRequest.Proxy = ProxyClass.ProxyServer;
+                WebResponse myWebResponse = myWebRequest.GetResponse();
+                Uri uri = new Uri(myWebResponse.ResponseUri.ToString());
+                ServicePoint sp = ServicePointManager.FindServicePoint(uri);
+                sp.ConnectionLimit = 10;
+                myWebResponse.Close();
+                using (WebClient myWebClient = new WebClient())
                 {
-                    Control[] buttons = Controls.Find("button" + g, true);
-                    if (buttons.Length > 0)
+                    myWebClient.Proxy = ProxyClass.ProxyServer;
+                    myWebClient.DownloadProgressChanged += (o, args) =>
                     {
-                        Button button = (Button)buttons[0];
-                        button.BackColor = Color.Orange;
-                    }
-                    progressBarneu.Value = args.ProgressPercentage;
-                    downloadLabel.Text = string.Format("{0} MB's / {1} MB's",
-                        (args.BytesReceived / 1024d / 1024d).ToString("0.00"),
-                        (args.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
-                    percLabel.Text = args.ProgressPercentage.ToString() + "%";
-                };
-                myWebClient.DownloadFileCompleted += (o, args) =>
-                {
-                    if (args.Cancelled == true)
+                        Control[] buttons = Controls.Find("button" + g, true);
+                        if (buttons.Length > 0)
+                        {
+                            Button button = (Button)buttons[0];
+                            button.BackColor = Color.Orange;
+                        }
+                        progressBarneu.Value = args.ProgressPercentage;
+                        downloadLabel.Text = string.Format("{0} MB's / {1} MB's",
+                            (args.BytesReceived / 1024d / 1024d).ToString("0.00"),
+                            (args.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
+                        percLabel.Text = args.ProgressPercentage.ToString() + "%";
+                    };
+                    myWebClient.DownloadFileCompleted += (o, args) =>
                     {
-                        MessageBox.Show("Download has been canceled.");
-                    }
-                    else
-                    {
-                        downloadLabel.Text = Langfile.Texts("downUnpstart");
-                        string arguments = " x " + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe" + " -o" + @"Update\" + entpDir[b] + " -y";
+                        if (args.Error != null)
+                        {
+                            MessageBox.Show("Download has been canceled.\n\r" + args.Error.Message);
+                        }
+                        else
+                        {
+                            downloadLabel.Text = Langfile.Texts("downUnpstart");
+                            string arguments = " x " + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe" + " -o" + @"Update\" + entpDir[b] + " -y";
                             Process process = new Process();
                             process.StartInfo.FileName = @"Bin\7zr.exe";
                             process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                             process.StartInfo.Arguments = arguments;
                             process.Start();
                             process.WaitForExit();
-                        if (File.Exists(instDir[b] + "\\updates\\Version.log"))
-                        {
-                            if (checkBox3.Checked)
+                            if (File.Exists(instDir[b] + "\\updates\\Version.log"))
                             {
-                                string[] instVersion = File.ReadAllText(instDir[b] + "\\updates\\Version.log").Split(new char[] { '|' });
-                                if (buildversion[c] != instVersion[0])
+                                if (checkBox3.Checked)
                                 {
-                                    NewMethod4(b, c, a);
+                                    string[] instVersion = File.ReadAllText(instDir[b] + "\\updates\\Version.log").Split(new char[] { '|' });
+                                    if (buildversion[c] != instVersion[0])
+                                    {
+                                        NewMethod4(b, c, a);
+                                    }
+                                    else if ((buildversion[c] == instVersion[0]) && (checkBox4.Checked))
+                                    {
+                                        NewMethod4(b, c, a);
+                                    }
                                 }
-                                else if ((buildversion[c] == instVersion[0]) && (checkBox4.Checked))
+                                else if (!checkBox3.Checked)
                                 {
                                     NewMethod4(b, c, a);
                                 }
                             }
-                            else if (!checkBox3.Checked)
+                            else
                             {
-                                NewMethod4(b, c, a);
+                                NewMethod9(b, c, a);
                             }
                         }
-                        else
+                        if (checkBox5.Checked)
                         {
-                            NewMethod9(b, c, a);
+                            if (!File.Exists(deskDir + "\\" + instDir[b] + ".lnk"))
+                            {
+                                NewMethod5(b);
+                            }
                         }
-                    }
-                    if (checkBox5.Checked)
-                    {
-                        if (!File.Exists(deskDir + "\\" + instDir[b] + ".lnk"))
+                        if (!File.Exists(@instDir[b] + " Launcher.exe"))
                         {
-                            NewMethod5(b);
+                            File.Copy(@"Bin\Launcher\" + instDir[b] + " Launcher.exe", @instDir[b] + " Launcher.exe");
                         }
-                    }
-                    if (!File.Exists(@instDir[b] + " Launcher.exe"))
+                        File.Delete("Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
+                        downloadLabel.Text = Langfile.Texts("downUnpfine");
+                    };
+                    try
                     {
-                        File.Copy(@"Bin\Launcher\" + instDir[b] + " Launcher.exe", @instDir[b] + " Launcher.exe");
+                        var task = myWebClient.DownloadFileTaskAsync(uri, "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
+                        list.Add(task);
                     }
-                    File.Delete("Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
-                    downloadLabel.Text = Langfile.Texts("downUnpfine");
-                };
-                try
-                {
-                    var task = myWebClient.DownloadFileTaskAsync(uri, "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
-                    list.Add(task);
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                await Task.WhenAll(list);
+                await Task.Delay(2000);
+                Controls.Remove(progressBox);
             }
-            await Task.WhenAll(list);
-            await Task.Delay(2000);
-            Controls.Remove(progressBox);
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: \n\r" + ex.Message);
+                Controls.Remove(progressBox);
+
+            }
         }
         public void Message1()
         {
@@ -792,6 +853,15 @@ namespace Firefox_Updater
                 CheckButton2();
             }
         }
+        private void NewMethod10(string proxyurl)
+        {
+            Text = Text + " - Proxy: " + proxyurl;
+            ProxyClass.ProxyServer = new WebProxy(proxyurl)
+            {
+                UseDefaultCredentials = true,
+                Credentials = CredentialCache.DefaultNetworkCredentials
+            };
+        }
         private void CheckUpdate()
         {
             GroupBox groupBoxupdate = new GroupBox
@@ -858,7 +928,8 @@ namespace Firefox_Updater
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             try
             {
-                var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+                var request = WebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+				request.Proxy = ProxyClass.ProxyServer;															 
                 var response = request.GetResponse();
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
@@ -880,7 +951,8 @@ namespace Firefox_Updater
             void UpdateButton_Click(object sender, EventArgs e)
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                var request2 = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+                var request2 = WebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
+				request2.Proxy = ProxyClass.ProxyServer;															  
                 var response2 = request2.GetResponse();
                 using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                 {
@@ -889,6 +961,7 @@ namespace Firefox_Updater
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     using (WebClient myWebClient2 = new WebClient())
                     {
+						myWebClient2.Proxy = ProxyClass.ProxyServer;																  
                         myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorFirefoxUpd/releases/download/v{version}/Portable.Firefox.Updater.v{version}.7z", @"Portable.Firefox.Updater.v" + version + ".7z");
                     }
                     File.AppendAllText(@"Update.cmd", "@echo off" + "\n" +
@@ -910,7 +983,8 @@ namespace Firefox_Updater
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             try
             {
-                var request = (WebRequest)HttpWebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Version.txt");
+                var request = WebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Version.txt");
+				request.Proxy = ProxyClass.ProxyServer;															 
                 var response = request.GetResponse();
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
@@ -923,6 +997,7 @@ namespace Firefox_Updater
                         {
                             using (WebClient myWebClient2 = new WebClient())
                             {
+								myWebClient2.Proxy = ProxyClass.ProxyServer;																  
                                 myWebClient2.DownloadFile("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Launcher.7z", @"Launcher.7z");
                             }
                             string arguments = " x " + @"Launcher.7z" + " -o" + @"Bin\\Launcher" + " -y";
@@ -964,12 +1039,10 @@ namespace Firefox_Updater
             FileVersionInfo launcherVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Firefox Launcher.exe");
             MessageBox.Show("Updater Version - " + updVersion.FileVersion + "\nLauncher Version - " + launcherVersion.FileVersion, "Version Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
         private void RegistrierenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[10]);
         }
-
         private void RegistrierenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[9]);
@@ -979,101 +1052,83 @@ namespace Firefox_Updater
         {
             Regfile.RegCreate(applicationPath, instDir[4]);
         }
-
         private void RegistrierenToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[3]);
         }
-
         private void RegistrierenToolStripMenuItem4_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[8]);
         }
-
         private void RegistrierenToolStripMenuItem5_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[2]);
         }
-
         private void RegistrierenToolStripMenuItem6_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[7]);
         }
-
         private void RegistrierenToolStripMenuItem7_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[1]);
         }
-
         private void RegistrierenToolStripMenuItem8_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[6]);
         }
-
         private void RegistrierenToolStripMenuItem9_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[0]);
         }
-
         private void RegistrierenToolStripMenuItem10_Click(object sender, EventArgs e)
         {
             Regfile.RegCreate(applicationPath, instDir[5]);
         }
-
         private void EntfernenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem1.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem2.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem3_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem3.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem4_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem4.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem5_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem5.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem6_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem6.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem7_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem7.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem8_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem8.Enabled = true;
             Regfile.RegDel();
         }
-
         private void EntfernenToolStripMenuItem9_Click(object sender, EventArgs e)
         {
             registrierenToolStripMenuItem9.Enabled = true;
@@ -1085,7 +1140,6 @@ namespace Firefox_Updater
             registrierenToolStripMenuItem10.Enabled = true;
             Regfile.RegDel();
         }
-
         private void ExtrasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

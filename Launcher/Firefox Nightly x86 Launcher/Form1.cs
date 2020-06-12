@@ -35,12 +35,12 @@ namespace Firefox_Nightly_x86_Launcher
         {
             if (radioButton1.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox Nightly x86\\updates\\Profile.txt", "-allow-downgrade -no-remote -profile \"profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox Nightly x86\\updates\\Profile.txt", "-allow-downgrade -profile \"profile\"");
                 this.Close();
             }
             if (radioButton2.Checked)
             {
-                File.WriteAllText(applicationPath + "\\Firefox Nightly x86\\updates\\Profile.txt", "-no-remote -profile \"Firefox Nightly x86\\profile\"");
+                File.WriteAllText(applicationPath + "\\Firefox Nightly x86\\updates\\Profile.txt", "-profile \"Firefox Nightly x86\\profile\"");
                 this.Close();
             }
             if (radioButton3.Checked)
