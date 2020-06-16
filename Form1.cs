@@ -47,27 +47,27 @@ namespace Firefox_Updater
                     NewMethod10(proxyurl);
                 }
             }
-            try
-            {
-                WebRequest myWebRequestTest = WebRequest.Create("https://download.mozilla.org/?");
-                myWebRequestTest.Timeout = 2000;
-                myWebRequestTest.Proxy = ProxyClass.ProxyServer;
-                WebResponse myWebResponseTest = myWebRequestTest.GetResponse();
-                if (((HttpWebResponse)myWebResponseTest).StatusCode == HttpStatusCode.OK)
-                {
-                    myWebResponseTest.Close();
-                }
-                else
-                {
-                    myWebResponseTest.Close();
-                    Environment.Exit(253);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: \n\r" + ex.Message);
-                Environment.Exit(254);
-            }
+            //try
+            //{
+                //WebRequest myWebRequestTest = WebRequest.Create("https://download.mozilla.org/?");
+                //myWebRequestTest.Timeout = 2000;
+                //myWebRequestTest.Proxy = ProxyClass.ProxyServer;
+                //WebResponse myWebResponseTest = myWebRequestTest.GetResponse();
+                //if (((HttpWebResponse)myWebResponseTest).StatusCode == HttpStatusCode.OK)
+                //{
+                    //myWebResponseTest.Close();
+                //}
+                //else
+                //{
+                    //myWebResponseTest.Close();
+                    //Environment.Exit(253);
+                //}
+            //}
+            //catch (Exception ex)
+            //{
+                //MessageBox.Show("Error: \n\r" + ex.Message);
+                //Environment.Exit(254);
+            //}
             try
             {
                 for (int i = 0; i <= 4; i++)
