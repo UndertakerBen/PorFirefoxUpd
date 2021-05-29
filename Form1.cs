@@ -26,17 +26,18 @@ namespace Firefox_Updater
         readonly ToolTip toolTip = new ToolTip();
         readonly WebClient myWebClient = new WebClient();
         readonly CultureInfo culture1 = CultureInfo.CurrentUICulture;
+        private readonly string[] CommandLineArgs = Environment.GetCommandLineArgs();
         public int comboIndex;
-		public static class ProxyClass
+        public static class ProxyClass
         {
             public static WebProxy ProxyServer = null;
         }
         public Form1()
         {
             InitializeComponent();
-            if (File.Exists(applicationPath + "\\Proxy.ini"))
+            if (File.Exists($"{applicationPath}\\Proxy.ini"))
             {
-                string proxyurl = File.ReadAllText(applicationPath + "\\Proxy.ini");
+                string proxyurl = File.ReadAllText($"{applicationPath}\\Proxy.ini");
                 NewMethod10(proxyurl);
             }
             foreach (string arg in Environment.GetCommandLineArgs())
@@ -47,32 +48,11 @@ namespace Firefox_Updater
                     NewMethod10(proxyurl);
                 }
             }
-            //try
-            //{
-                //WebRequest myWebRequestTest = WebRequest.Create("https://download.mozilla.org/?");
-                //myWebRequestTest.Timeout = 2000;
-                //myWebRequestTest.Proxy = ProxyClass.ProxyServer;
-                //WebResponse myWebResponseTest = myWebRequestTest.GetResponse();
-                //if (((HttpWebResponse)myWebResponseTest).StatusCode == HttpStatusCode.OK)
-                //{
-                    //myWebResponseTest.Close();
-                //}
-                //else
-                //{
-                    //myWebResponseTest.Close();
-                    //Environment.Exit(253);
-                //}
-            //}
-            //catch (Exception ex)
-            //{
-                //MessageBox.Show("Error: \n\r" + ex.Message);
-                //Environment.Exit(254);
-            //}
             try
             {
                 for (int i = 0; i <= 4; i++)
                 {
-                    WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[i] + "de");
+                    WebRequest myWebRequest = WebRequest.Create($"https://download.mozilla.org/?{ring[i]}de");
                     myWebRequest.Proxy = ProxyClass.ProxyServer;
                     WebResponse myWebResponse = myWebRequest.GetResponse();
                     myWebResponse.Close();
@@ -130,15 +110,15 @@ namespace Firefox_Updater
             }
             if (IntPtr.Size == 8)
             {
-                if (File.Exists(@"Firefox ESR x64\Firefox.exe") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
+                if (File.Exists($"{applicationPath}\\Firefox ESR x64\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Nightly x64\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Dev x64\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Beta x64\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Stable x64\\Firefox.exe"))
                 {
                     checkBox2.Enabled = false;
                 }
-                if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
+                if (File.Exists($"{applicationPath}\\Firefox ESR x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Nightly x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Dev x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Beta x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Stable x86\\Firefox.exe"))
                 {
                     checkBox1.Enabled = false;
                 }
-                if (File.Exists(@"Firefox ESR x86\Firefox.exe") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe") || File.Exists(@"Firefox ESR x64") || File.Exists(@"Firefox Nightly x64\Firefox.exe") || File.Exists(@"Firefox Dev x64\Firefox.exe") || File.Exists(@"Firefox Beta x64\Firefox.exe") || File.Exists(@"Firefox Stable x64\Firefox.exe"))
+                if (File.Exists($"{applicationPath}\\Firefox ESR x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Nightly x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Dev x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Beta x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Stable x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox ESR x64") || File.Exists($"{applicationPath}\\Firefox Nightly x64\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Dev x64\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Beta x64\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Stable x64\\Firefox.exe"))
                 {
                     checkBox3.Checked = true;
                     CheckButton();
@@ -150,7 +130,7 @@ namespace Firefox_Updater
                     button11.Enabled = false;
                     button11.BackColor = Color.FromArgb(244, 244, 244);
 
-                    if (File.Exists(@"Firefox\Firefox.exe"))
+                    if (File.Exists($"{applicationPath}\\Firefox\\Firefox.exe"))
                     {
                         CheckButton2();
                     }
@@ -158,7 +138,7 @@ namespace Firefox_Updater
             }
             else if (IntPtr.Size != 8)
             {
-                if (File.Exists(@"Firefox ESR x86") || File.Exists(@"Firefox Nightly x86\Firefox.exe") || File.Exists(@"Firefox Dev x86\Firefox.exe") || File.Exists(@"Firefox Beta x86\Firefox.exe") || File.Exists(@"Firefox Stable x86\Firefox.exe"))
+                if (File.Exists($"{applicationPath}\\Firefox ESR x86") || File.Exists($"{applicationPath}\\Firefox Nightly x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Dev x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Beta x86\\Firefox.exe") || File.Exists($"{applicationPath}\\Firefox Stable x86\\Firefox.exe"))
                 {
                     checkBox3.Checked = true;
                     checkBox1.Enabled = false;
@@ -170,20 +150,32 @@ namespace Firefox_Updater
                     button11.Enabled = false;
                     button11.BackColor = Color.FromArgb(244, 244, 244);
 
-                    if (File.Exists(@"Firefox\Firefox.exe"))
+                    if (File.Exists($"{applicationPath}\\Firefox\\Firefox.exe"))
                     {
                         CheckButton2();
                     }
                 }
             }
-            //}
-            CheckUpdate();
             foreach (Process proc in Process.GetProcesses())
             {
                 if (proc.ProcessName.Equals("firefox"))
                 {
                     MessageBox.Show(Langfile.Texts("MeassageRunning"), "Portable Firefox Updater", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
+                }
+            }
+            _ = TestCheck();
+        }
+        private async Task TestCheck()
+        {
+            await CheckUpdate();
+            for (int i = 0; i < CommandLineArgs.GetLength(0); i++)
+            {
+                if (CommandLineArgs[i].ToLower().Equals("-updateall"))
+                {
+                    await UpdateAll();
+                    await Task.Delay(2000);
+                    Application.Exit();
                 }
             }
         }
@@ -250,7 +242,7 @@ namespace Firefox_Updater
         {
             if (checkBox3.Checked)
             {
-                await NewMethod(1, 5, 5,6);
+                await NewMethod(1, 5, 5, 6);
             }
             else if (!checkBox3.Checked)
             {
@@ -283,7 +275,7 @@ namespace Firefox_Updater
         {
             if (checkBox3.Checked)
             {
-                await NewMethod(1, 8, 8,9);
+                await NewMethod(1, 8, 8, 9);
             }
             else if (!checkBox3.Checked)
             {
@@ -307,16 +299,16 @@ namespace Firefox_Updater
         }
         private async Task Testing()
         {
-            if ((!Directory.Exists(@"Firefox ESR x86")) && (!Directory.Exists(@"Firefox Nightly x86")) && (!Directory.Exists(@"Firefox Dev x86")) && (!Directory.Exists(@"Firefox Beta x86")) && (!Directory.Exists(@"Firefox Stable x86")))
+            if ((!Directory.Exists($"{applicationPath}\\Firefox ESR x86")) && (!Directory.Exists($"{applicationPath}\\Firefox Nightly x86")) && (!Directory.Exists($"{applicationPath}\\Firefox Dev x86")) && (!Directory.Exists($"{applicationPath}\\Firefox Beta x86")) && (!Directory.Exists($"{applicationPath}\\Firefox Stable x86")))
             {
                 if (checkBox1.Checked)
                 {
-                    await DownloadFile(0, 0, 0,1);
-                    await DownloadFile(0, 1, 1,2);
-                    await DownloadFile(0, 2, 2,3);
+                    await DownloadFile(0, 0, 0, 1);
+                    await DownloadFile(0, 1, 1, 2);
+                    await DownloadFile(0, 2, 2, 3);
                     await DownloadFile(0, 3, 3, 4);
                     await DownloadFile(0, 4, 4, 5);
-					checkBox1.Checked = false;
+                    checkBox1.Checked = false;
                     checkBox1.Enabled = false;
                 }
             }
@@ -328,7 +320,7 @@ namespace Firefox_Updater
             await NewMethod2(0, 4, 4, 5);
             if (IntPtr.Size == 8)
             {
-                if ((!Directory.Exists(@"Firefox ESR x64")) && (!Directory.Exists(@"Firefox Nightly x64")) && (!Directory.Exists(@"Firefox Dev x64")) && (!Directory.Exists(@"Firefox Beta x64")) && (!Directory.Exists(@"Firefox Stable x64")))
+                if ((!Directory.Exists($"{applicationPath}\\Firefox ESR x64")) && (!Directory.Exists($"{applicationPath}\\Firefox Nightly x64")) && (!Directory.Exists($"{applicationPath}\\Firefox Dev x64")) && (!Directory.Exists($"{applicationPath}\\Firefox Beta x64")) && (!Directory.Exists($"{applicationPath}\\Firefox Stable x64")))
                 {
                     if (checkBox2.Checked)
                     {
@@ -337,19 +329,117 @@ namespace Firefox_Updater
                         await DownloadFile(1, 7, 7, 8);
                         await DownloadFile(1, 8, 8, 9);
                         await DownloadFile(1, 9, 9, 10);
-						checkBox2.Checked = false;
-						checkBox2.Enabled = false;
+                        checkBox2.Checked = false;
+                        checkBox2.Enabled = false;
                     }
                 }
                 await NewMethod2(1, 5, 5, 6);
                 await NewMethod2(1, 6, 6, 7);
                 await NewMethod2(1, 7, 7, 8);
-                await NewMethod2(1, 8, 8,9);
+                await NewMethod2(1, 8, 8, 9);
                 await NewMethod2(1, 9, 9, 10);
             }
         }
+        private async Task UpdateAll()
+        {
+            if (Directory.Exists($"{applicationPath}\\Firefox"))
+            {
+                if (File.Exists($"{applicationPath}\\Firefox\\updates\\Version.log"))
+                {
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\Firefox\\updates\\Version.log").Split(new char[] { '|' });
+                    if (instVersion[1] == "ESR" & instVersion[2] == "x86")
+                    {
+                        if (buildversion[0] != instVersion[0])
+                        {
+                            await NewMethod1(0, 10, 0, 1);
+                        }
+                    }
+                    if (instVersion[1] == "Nightly" & instVersion[2] == "x86")
+                    {
+                        if (buildversion[1] != instVersion[0])
+                        {
+                            await NewMethod1(0, 10, 1, 2);
+                        }
+                    }
+                    if (instVersion[1] == "Developer" & instVersion[2] == "x86")
+                    {
+                        if (buildversion[2] != instVersion[0])
+                        {
+                            await NewMethod1(0, 10, 2, 3);
+                        }
+                    }
+                    if (instVersion[1] == "Beta" & instVersion[2] == "x86")
+                    {
+                        if (buildversion[3] != instVersion[0])
+                        {
+                            await NewMethod1(0, 10, 3, 4);
+                        }
+                    }
+                    if (instVersion[1] == "Stable" & instVersion[2] == "x86")
+                    {
+                        if (buildversion[4] != instVersion[0])
+                        {
+                            await NewMethod1(0, 10, 4, 5);
+                        }
+                    }
+                    if (instVersion[1] == "ESR" & instVersion[2] == "x64")
+                    {
+                        if (buildversion[5] != instVersion[0])
+                        {
+                            await NewMethod1(1, 10, 5, 6);
+                        }
+                    }
+                    if (instVersion[1] == "Nightly" & instVersion[2] == "x64")
+                    {
+                        if (buildversion[6] != instVersion[0])
+                        {
+                            await NewMethod1(1, 10, 6, 7);
+                        }
+                    }
+                    if (instVersion[1] == "Developer" & instVersion[2] == "x64")
+                    {
+                        if (buildversion[7] != instVersion[0])
+                        {
+                            await NewMethod1(1, 10, 7, 8);
+                        }
+                    }
+                    if (instVersion[1] == "Beta" & instVersion[2] == "x64")
+                    {
+                        if (buildversion[8] != instVersion[0])
+                        {
+                            await NewMethod1(1, 10, 8, 9);
+                        }
+                    }
+                    if (instVersion[1] == "Stable" & instVersion[2] == "x64")
+                    {
+                        if (buildversion[9] != instVersion[0])
+                        {
+                            await NewMethod1(1, 10, 9, 10);
+                        }
+                    }
+                }
+            }
+            await Testing();
+            await Task.WhenAll();
+        }
         public async Task DownloadFile(int a, int b, int c, int g)
         {
+            for (int i = 0; i < CommandLineArgs.GetLength(0); i++)
+            {
+                if (CommandLineArgs[i].ToLower().Equals("-updateall"))
+                {
+                    if (File.Exists($"{applicationPath}\\{instDir[b]}\\omni.ja"))
+                    {
+                        foreach (string line in File.ReadLines($"{applicationPath}\\{instDir[b]}\\omni.ja"))
+                        {
+                            if (line.Contains("locale alerts"))
+                            {
+                                comboBox1.SelectedIndex = Array.IndexOf(lang, line.Substring(line.IndexOf("locale alerts")).Split(new char[] { ' ' }, 4)[2]);
+                            }
+                        }
+                    }
+                }
+            }
             GroupBox progressBox = new GroupBox
             {
                 Location = new Point(groupBox3.Location.X, button12.Location.Y + button12.Size.Height + 5),
@@ -392,7 +482,7 @@ namespace Firefox_Updater
             try
             {
                 List<Task> list = new List<Task>();
-                WebRequest myWebRequest = WebRequest.Create("https://download.mozilla.org/?" + ring[c] + lang[comboIndex]);
+                WebRequest myWebRequest = WebRequest.Create($"https://download.mozilla.org/?{ring[c]}{lang[comboIndex]}");
                 myWebRequest.Proxy = ProxyClass.ProxyServer;
                 WebResponse myWebResponse = myWebRequest.GetResponse();
                 Uri uri = new Uri(myWebResponse.ResponseUri.ToString());
@@ -425,18 +515,18 @@ namespace Firefox_Updater
                         else
                         {
                             downloadLabel.Text = Langfile.Texts("downUnpstart");
-                            string arguments = " x " + "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe" + " -o" + @"Update\" + entpDir[b] + " -y";
+                            string arguments = $" x \"{applicationPath}\\Firefox_{ring2[c]}_{buildversion[c]}_{architektur[a]}_{lang[comboIndex]}.exe\" -o\"{applicationPath}\\Update\\{entpDir[b]}\" -y";
                             Process process = new Process();
-                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.FileName = $"{applicationPath}\\Bin\\7zr.exe";
                             process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                             process.StartInfo.Arguments = arguments;
                             process.Start();
                             process.WaitForExit();
-                            if (File.Exists(instDir[b] + "\\updates\\Version.log"))
+                            if (File.Exists($"{applicationPath}\\{instDir[b]}\\updates\\Version.log"))
                             {
                                 if (checkBox3.Checked)
                                 {
-                                    string[] instVersion = File.ReadAllText(instDir[b] + "\\updates\\Version.log").Split(new char[] { '|' });
+                                    string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[b]}\\updates\\Version.log").Split(new char[] { '|' });
                                     if (buildversion[c] != instVersion[0])
                                     {
                                         NewMethod4(b, c, a);
@@ -458,21 +548,21 @@ namespace Firefox_Updater
                         }
                         if (checkBox5.Checked)
                         {
-                            if (!File.Exists(deskDir + "\\" + instDir[b] + ".lnk"))
+                            if (!File.Exists($"{deskDir}\\{instDir[b]}.lnk"))
                             {
                                 NewMethod5(b);
                             }
                         }
-                        if (!File.Exists(@instDir[b] + " Launcher.exe"))
+                        if (!File.Exists($"{applicationPath}\\{instDir[b]} Launcher.exe"))
                         {
-                            File.Copy(@"Bin\Launcher\" + instDir[b] + " Launcher.exe", @instDir[b] + " Launcher.exe");
+                            File.Copy($"{applicationPath}\\Bin\\Launcher\\{instDir[b]} Launcher.exe", $"{applicationPath}\\{instDir[b]} Launcher.exe");
                         }
-                        File.Delete("Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
+                        File.Delete($"{applicationPath}\\Firefox_{ring2[c]}_{buildversion[c]}_{architektur[a]}_{lang[comboIndex]}.exe");
                         downloadLabel.Text = Langfile.Texts("downUnpfine");
                     };
                     try
                     {
-                        var task = myWebClient.DownloadFileTaskAsync(uri, "Firefox_" + ring2[c] + "_" + buildversion[c] + "_" + architektur[a] + "_" + lang[comboIndex] + ".exe");
+                        var task = myWebClient.DownloadFileTaskAsync(uri, $"{applicationPath}\\Firefox_{ring2[c]}_{buildversion[c]}_{architektur[a]}_{lang[comboIndex]}.exe");
                         list.Add(task);
                     }
                     catch (Exception ex)
@@ -488,7 +578,6 @@ namespace Firefox_Updater
             {
                 MessageBox.Show("Error: \n\r" + ex.Message);
                 Controls.Remove(progressBox);
-
             }
         }
         public void Message1()
@@ -500,10 +589,10 @@ namespace Firefox_Updater
             NewMethod3();
             for (int i = 0; i <= 9; i++)
             {
-                if (File.Exists(@instDir[i] + "\\updates\\Version.log"))
+                if (File.Exists($"{applicationPath}\\{instDir[i]}\\updates\\Version.log"))
                 {
                     Control[] buttons = Controls.Find("button" + (i + 1), true);
-                    string[] instVersion = File.ReadAllText(@instDir[i] + "\\updates\\Version.log").Split(new char[] { '|' });
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[i]}\\updates\\Version.log").Split(new char[] { '|' });
                     if (buildversion[i] == instVersion[0])
                     {
                         if (buttons.Length > 0)
@@ -529,13 +618,13 @@ namespace Firefox_Updater
         public void CheckButton2()
         {
             NewMethod3();
-            if (File.Exists(@"Firefox\updates\Version.log"))
+            if (File.Exists($"{applicationPath}\\Firefox\\updates\\Version.log"))
             {
-                string[] instVersion = File.ReadAllText(@"Firefox\updates\Version.log").Split(new char[] { '|' });
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\Firefox\\updates\\Version.log").Split(new char[] { '|' });
                 switch (instVersion[1])
                 {
                     case "ESR":
-                        NewMethod6(instVersion, 1, 6 , 0);
+                        NewMethod6(instVersion, 1, 6, 0);
                         break;
                     case "Nightly":
                         NewMethod6(instVersion, 2, 7, 1);
@@ -556,8 +645,8 @@ namespace Firefox_Updater
         {
             if (checkBox3.Checked)
             {
-                checkBox2.Enabled = !File.Exists(@"Firefox ESR x64\Firefox.exe") && !File.Exists(@"Firefox Nightly x64\Firefox.exe") && !File.Exists(@"Firefox Dev x64\Firefox.exe") && !File.Exists(@"Firefox Beta x64\Firefox.exe") && !File.Exists(@"Firefox Stable x64\Firefox.exe");
-                checkBox1.Enabled = !File.Exists(@"Firefox ESR x86\Firefox.exe") && !File.Exists(@"Firefox Nightly x86\Firefox.exe") && !File.Exists(@"Firefox Dev x86\Firefox.exe") && !File.Exists(@"Firefox Beta x86\Firefox.exe") && !File.Exists(@"Firefox Stable x86\Firefox.exe");
+                checkBox2.Enabled = !File.Exists($"{applicationPath}\\Firefox ESR x64\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Nightly x64\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Dev x64\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Beta x64\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Stable x64\\Firefox.exe");
+                checkBox1.Enabled = !File.Exists($"{applicationPath}\\Firefox ESR x86\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Nightly x86\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Dev x86\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Beta x86\\Firefox.exe") && !File.Exists($"{applicationPath}\\Firefox Stable x86\\Firefox.exe");
                 if (button11.Enabled)
                 {
                     button11.BackColor = Color.FromArgb(224, 224, 224);
@@ -605,9 +694,9 @@ namespace Firefox_Updater
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (Directory.Exists(@"Update"))
+            if (Directory.Exists($"{applicationPath}\\Update"))
             {
-                Directory.Delete(@"Update", true);
+                Directory.Delete($"{applicationPath}\\Update", true);
             }
         }
         private void Button1_MouseHover(object sender, EventArgs e)
@@ -659,14 +748,14 @@ namespace Firefox_Updater
         }
         private async Task NewMethod(int a, int b, int c, int g)
         {
-            if (File.Exists(@instDir[b] + "\\updates\\Version.log"))
+            if (File.Exists($"{applicationPath}\\{instDir[b]}\\updates\\Version.log"))
             {
-                string[] instVersion = File.ReadAllText(@instDir[b] + "\\updates\\Version.log").Split(new char[] { '|' });
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[b]}\\updates\\Version.log").Split(new char[] { '|' });
                 if (instVersion[0] == buildversion[c])
                 {
                     if (checkBox4.Checked)
                     {
-                        await DownloadFile(a, b, c,g);
+                        await DownloadFile(a, b, c, g);
                     }
                     else
                     {
@@ -685,9 +774,9 @@ namespace Firefox_Updater
         }
         private async Task NewMethod1(int a, int b, int c, int g)
         {
-            if (File.Exists(@"Firefox\updates\Version.log"))
+            if (File.Exists($"{applicationPath}\\Firefox\\updates\\Version.log"))
             {
-                string[] instVersion = File.ReadAllText(@"Firefox\updates\Version.log").Split(new char[] { '|' });
+                string[] instVersion = File.ReadAllText($"{applicationPath}\\Firefox\\updates\\Version.log").Split(new char[] { '|' });
                 if ((instVersion[0] == buildversion[c]) && (instVersion[1] == ring2[c]) && (instVersion[2] == architektur[a]))
                 {
                     if (checkBox4.Checked)
@@ -711,11 +800,11 @@ namespace Firefox_Updater
         }
         private async Task NewMethod2(int a, int b, int c, int g)
         {
-            if (Directory.Exists(instDir[b]))
+            if (Directory.Exists($"{applicationPath}\\{instDir[b]}"))
             {
-                if (File.Exists(@instDir[b] + "\\updates\\Version.log"))
+                if (File.Exists($"{applicationPath}\\{instDir[b]}\\updates\\Version.log"))
                 {
-                    string[] instVersion = File.ReadAllText(@instDir[b] + "\\updates\\Version.log").Split(new char[] { '|' });
+                    string[] instVersion = File.ReadAllText($"{applicationPath}\\{instDir[b]}\\updates\\Version.log").Split(new char[] { '|' });
                     if (instVersion[0] != buildversion[c])
                     {
                         await DownloadFile(a, b, c, g);
@@ -737,29 +826,36 @@ namespace Firefox_Updater
         }
         private void NewMethod4(int d, int c, int a)
         {
-            if (Directory.Exists(instDir[d] + "\\updates"))
+            try
             {
-                Directory.Move(instDir[d] + "\\Updates", @"Update\" + entpDir[d] + "\\core\\updates");
+                if (Directory.Exists($"{applicationPath}\\{instDir[d]}\\updates"))
+                {
+                    Directory.Move($"{applicationPath}\\{instDir[d]}\\Updates", $"{applicationPath}\\Update\\{entpDir[d]}\\core\\updates");
+                }
+                if (Directory.Exists($"{applicationPath}\\{instDir[d]}\\profile"))
+                {
+                    Directory.Move($"{applicationPath}\\{instDir[d]}\\profile", $"{applicationPath}\\Update\\{entpDir[d]}\\core\\profile");
+                }
+                Thread.Sleep(2000);
+                if (Directory.Exists($"{applicationPath}\\{instDir[d]}"))
+                {
+                    Directory.Delete($"{applicationPath}\\{instDir[d]}", true);
+                }
+                Thread.Sleep(2000);
+                NewMethod9(d, c, a);
             }
-            if (Directory.Exists(instDir[d] + "\\profile"))
+            catch (Exception ex)
             {
-                Directory.Move(instDir[d] + "\\profile", @"Update\" + entpDir[d] + "\\core\\profile");
+                MessageBox.Show($"Error\r\n{ex.Message}");
             }
-            Thread.Sleep(2000);
-            if (Directory.Exists(instDir[d]))
-            {
-                Directory.Delete(instDir[d], true);
-            }
-            Thread.Sleep(2000);
-            NewMethod9(d, c, a);
         }
         private void NewMethod5(int d)
         {
             IWshRuntimeLibrary.WshShell shell = new IWshRuntimeLibrary.WshShell();
             IWshRuntimeLibrary.IWshShortcut link = (IWshRuntimeLibrary.IWshShortcut)shell.CreateShortcut(deskDir + "\\" + instDir[d] + ".lnk");
-            link.IconLocation = applicationPath + "\\" + instDir[d] + "\\Firefox.exe,0";
+            link.IconLocation = $"{applicationPath}\\{instDir[d]}\\Firefox.exe,0";
             link.WorkingDirectory = applicationPath;
-            link.TargetPath = applicationPath + "\\" + instDir[d] + " Launcher.exe";
+            link.TargetPath = $"{applicationPath}\\{instDir[d]} Launcher.exe";
             link.Save();
         }
         private void NewMethod6(string[] instVersion, int a, int b, int c)
@@ -811,16 +907,16 @@ namespace Firefox_Updater
             Button button = (Button)buttons[0];
             if (!checkBox3.Checked)
             {
-                if (File.Exists(@"Firefox\updates\Version.log"))
+                if (File.Exists($"{applicationPath}\\Firefox\\updates\\Version.log"))
                 {
-                    NewMethod8(a, arch, button, File.ReadAllText(@"Firefox\updates\Version.log").Split(new char[] { '|' }));
+                    NewMethod8(a, arch, button, File.ReadAllText($"{applicationPath}\\Firefox\\updates\\Version.log").Split(new char[] { '|' }));
                 }
             }
             if (checkBox3.Checked)
             {
-                if (File.Exists(instDir[a] + "\\updates\\Version.log"))
+                if (File.Exists($"{applicationPath}\\{instDir[a]}\\updates\\Version.log"))
                 {
-                    NewMethod8(a, arch, button, File.ReadAllText(instDir[a] + "\\updates\\Version.log").Split(new char[] { '|' }));
+                    NewMethod8(a, arch, button, File.ReadAllText($"{applicationPath}\\{instDir[a]}\\updates\\Version.log").Split(new char[] { '|' }));
                 }
             }
         }
@@ -837,13 +933,14 @@ namespace Firefox_Updater
         }
         private void NewMethod9(int d, int c, int a)
         {
-            Directory.Move(@"Update\" + entpDir[d] + "\\core", instDir[d]);
-            if (!Directory.Exists(instDir[d] + "\\updates"))
+            Thread.Sleep(2000);
+            Directory.Move($"{applicationPath}\\Update\\{entpDir[d]}\\core", $"{applicationPath}\\{instDir[d]}");
+            if (!Directory.Exists($"{applicationPath}\\{instDir[d]}\\updates"))
             {
-                Directory.CreateDirectory(instDir[d] + "\\updates");
+                Directory.CreateDirectory($"{applicationPath}\\{instDir[d]}\\updates");
             }
-            File.WriteAllText(instDir[d] + "\\updates\\Version.log", buildversion[c] + "|" + ring2[c] + "|" + architektur[a]);
-            Directory.Delete(@"Update\" + entpDir[d], true);
+            File.WriteAllText($"{applicationPath}\\{instDir[d]}\\updates\\Version.log", $"{buildversion[c]}|{ring2[c]}|{architektur[a]}|{comboBox1.SelectedIndex}");
+            Directory.Delete($"{applicationPath}\\Update\\{entpDir[d]}", true);
             if (checkBox3.Checked)
             {
                 CheckButton();
@@ -862,7 +959,7 @@ namespace Firefox_Updater
                 Credentials = CredentialCache.DefaultNetworkCredentials
             };
         }
-        private void CheckUpdate()
+        private async Task CheckUpdate()
         {
             GroupBox groupBoxupdate = new GroupBox
             {
@@ -929,17 +1026,47 @@ namespace Firefox_Updater
             try
             {
                 var request = WebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
-				request.Proxy = ProxyClass.ProxyServer;															 
+                request.Proxy = ProxyClass.ProxyServer;
                 var response = request.GetResponse();
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    var version = reader.ReadToEnd();
-                    FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
-                    versionLabel.Text = testm.FileVersion + "  >>> " + version;
-                    if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
+                    Version version = new Version(reader.ReadToEnd());
+                    Version testm = new Version(FileVersionInfo.GetVersionInfo($"{applicationPath}\\Portable Firefox Updater.exe").FileVersion);
+                    versionLabel.Text = testm + "  >>> " + version;
+                    if (version > testm)
                     {
-                        Controls.Add(groupBoxupdate);
-                        groupBox3.Enabled = false;
+                        for (int i = 0; i < CommandLineArgs.GetLength(0); i++)
+                        {
+                            if (CommandLineArgs[i].ToLower().Equals("-updateall"))
+                            {
+                                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                                using (WebClient myWebClient2 = new WebClient())
+                                {
+                                    myWebClient2.Proxy = ProxyClass.ProxyServer;
+                                    myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorFirefoxUpd/releases/download/v{version}/Portable.Firefox.Updater.v{version}.7z", $"{applicationPath}\\Portable.Firefox.Updater.v{version}.7z");
+                                }
+                                File.AppendAllText($"{applicationPath}\\Update.cmd", "@echo off" + "\r\n" +
+                                    "timeout /t 4 /nobreak" + "\r\n" +
+                                    "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Firefox Updater.exe\"" + " -y\r\n" +
+                                    "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Firefox Updater.exe\" -UpdateAll\r\n" +
+                                    "del /f /q \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\"\r\n" +
+                                    "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\r\n" +
+                                    "exit\r\n");
+
+                                string arguments = $" /c call \"{applicationPath}\\Update.cmd";
+                                Process process = new Process();
+                                process.StartInfo.FileName = "cmd.exe";
+                                process.StartInfo.Arguments = arguments;
+                                process.Start();
+                                Close();
+                                await Task.Delay(2000);
+                            }
+                            else
+                            {
+                                Controls.Add(groupBoxupdate);
+                                groupBox3.Enabled = false;
+                            }
+                        }
                     }
                     reader.Close();
                 }
@@ -952,7 +1079,7 @@ namespace Firefox_Updater
             {
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var request2 = WebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Version.txt");
-				request2.Proxy = ProxyClass.ProxyServer;															  
+                request2.Proxy = ProxyClass.ProxyServer;
                 var response2 = request2.GetResponse();
                 using (StreamReader reader = new StreamReader(response2.GetResponseStream()))
                 {
@@ -961,18 +1088,18 @@ namespace Firefox_Updater
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     using (WebClient myWebClient2 = new WebClient())
                     {
-						myWebClient2.Proxy = ProxyClass.ProxyServer;																  
-                        myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorFirefoxUpd/releases/download/v{version}/Portable.Firefox.Updater.v{version}.7z", @"Portable.Firefox.Updater.v" + version + ".7z");
+                        myWebClient2.Proxy = ProxyClass.ProxyServer;
+                        myWebClient2.DownloadFile($"https://github.com/UndertakerBen/PorFirefoxUpd/releases/download/v{version}/Portable.Firefox.Updater.v{version}.7z", $"{applicationPath}\\Portable.Firefox.Updater.v{version}.7z");
                     }
-                    File.AppendAllText(@"Update.cmd", "@echo off" + "\n" +
-                        "timeout /t 1 /nobreak" + "\n" +
-                        "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Firefox Updater.exe\"" + " -y\n" +
-                        "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Firefox Updater.exe\"\n" +
-                        "del /f /q \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\"\n" +
-                        "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\n" +
-                        "exit\n");
+                    File.AppendAllText($"{applicationPath}\\Update.cmd", "@echo off" + "\r\n" +
+                        "timeout /t 2 /nobreak" + "\r\n" +
+                        "\"" + applicationPath + "\\Bin\\7zr.exe\" e \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\" -o\"" + applicationPath + "\" \"Portable Firefox Updater.exe\"" + " -y\r\n" +
+                        "call cmd /c Start /b \"\" " + "\"" + applicationPath + "\\Portable Firefox Updater.exe\"\r\n" +
+                        "del /f /q \"" + applicationPath + "\\Portable.Firefox.Updater.v" + version + ".7z\"\r\n" +
+                        "del /f /q \"" + applicationPath + "\\Update.cmd\" && exit\r\n" +
+                        "exit\r\n");
 
-                    string arguments = " /c call Update.cmd";
+                    string arguments = " /c call \"" + applicationPath + "\\Update.cmd\"";
                     Process process = new Process();
                     process.StartInfo.FileName = "cmd.exe";
                     process.StartInfo.Arguments = arguments;
@@ -984,39 +1111,39 @@ namespace Firefox_Updater
             try
             {
                 var request = WebRequest.Create("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Version.txt");
-				request.Proxy = ProxyClass.ProxyServer;															 
+                request.Proxy = ProxyClass.ProxyServer;
                 var response = request.GetResponse();
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    var version = reader.ReadToEnd();
-                    FileVersionInfo testm = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Firefox Launcher.exe");
-                    if (Convert.ToInt32(version.Replace(".", "")) > Convert.ToInt32(testm.FileVersion.Replace(".", "")))
+                    Version version = new Version(reader.ReadToEnd());
+                    Version testm = new Version(FileVersionInfo.GetVersionInfo($"{applicationPath}\\Bin\\Launcher\\Firefox Launcher.exe").FileVersion);
+                    if (version > testm)
                     {
                         reader.Close();
                         try
                         {
                             using (WebClient myWebClient2 = new WebClient())
                             {
-								myWebClient2.Proxy = ProxyClass.ProxyServer;																  
-                                myWebClient2.DownloadFile("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Launcher.7z", @"Launcher.7z");
+                                myWebClient2.Proxy = ProxyClass.ProxyServer;
+                                myWebClient2.DownloadFile("https://github.com/UndertakerBen/PorFirefoxUpd/raw/master/Launcher/Launcher.7z", $"{applicationPath}\\Launcher.7z");
                             }
-                            string arguments = " x " + @"Launcher.7z" + " -o" + @"Bin\\Launcher" + " -y";
+                            string arguments = $" x \"{applicationPath}\\Launcher.7z\" -o\"{applicationPath}\\Bin\\Launcher\" -y";
                             Process process = new Process();
-                            process.StartInfo.FileName = @"Bin\7zr.exe";
+                            process.StartInfo.FileName = $"{applicationPath}\\Bin\\7zr.exe";
                             process.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                             process.StartInfo.Arguments = arguments;
                             process.Start();
                             process.WaitForExit();
-                            File.Delete(@"Launcher.7z");
+                            File.Delete($"{applicationPath}\\Launcher.7z");
                             foreach (string launcher in instDir)
                             {
-                                if (File.Exists(launcher + " Launcher.exe"))
+                                if (File.Exists($"{applicationPath}\\{launcher} Launcher.exe"))
                                 {
-                                    FileVersionInfo binLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\" + launcher + " Launcher.exe");
-                                    FileVersionInfo istLauncher = FileVersionInfo.GetVersionInfo(applicationPath + "\\" + launcher + " Launcher.exe");
-                                    if (Convert.ToDecimal(binLauncher.FileVersion) > Convert.ToDecimal(istLauncher.FileVersion))
+                                    Version binLauncher = new Version(FileVersionInfo.GetVersionInfo($"{applicationPath}\\Bin\\Launcher\\{launcher} Launcher.exe").FileVersion);
+                                    Version istLauncher = new Version(FileVersionInfo.GetVersionInfo($"{applicationPath}\\{launcher} Launcher.exe").FileVersion);
+                                    if (binLauncher > istLauncher)
                                     {
-                                        File.Copy(@"bin\\Launcher\\" + launcher + " Launcher.exe", launcher + " Launcher.exe", true);
+                                        File.Copy($"{applicationPath}\\bin\\Launcher\\{launcher} Launcher.exe", $"{applicationPath}\\{launcher} Launcher.exe", true);
                                     }
                                 }
                             }
@@ -1035,9 +1162,9 @@ namespace Firefox_Updater
         }
         private void VersionInfo_Click(object sender, EventArgs e)
         {
-            FileVersionInfo updVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Portable Firefox Updater.exe");
-            FileVersionInfo launcherVersion = FileVersionInfo.GetVersionInfo(applicationPath + "\\Bin\\Launcher\\Firefox Launcher.exe");
-            MessageBox.Show("Updater Version - " + updVersion.FileVersion + "\nLauncher Version - " + launcherVersion.FileVersion, "Version Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Version updVersion = new Version(FileVersionInfo.GetVersionInfo($"{applicationPath}\\Portable Firefox Updater.exe").FileVersion);
+            Version launcherVersion = new Version(FileVersionInfo.GetVersionInfo($"{applicationPath}\\Bin\\Launcher\\Firefox Launcher.exe").FileVersion);
+            MessageBox.Show($"Updater Version - {updVersion}\r\nLauncher Version - {launcherVersion}", "Version Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void RegistrierenToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -1319,94 +1446,17 @@ namespace Firefox_Updater
                 }
                 else
                 {
-                    if (Directory.Exists(@"Firefox"))
-                    {
-                        firefoxAlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxAlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Stable x86"))
-                    {
-                        firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Stable x64"))
-                    {
-                        firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Beta x86"))
-                    {
-                        firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Beta x64"))
-                    {
-                        firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Dev x86"))
-                    {
-                        firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Dev x64"))
-                    {
-                        firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Nightly x86"))
-                    {
-                        firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox Nightly x64"))
-                    {
-                        firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox ESR x86"))
-                    {
-                        firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
-                    if (Directory.Exists(@"Firefox ESR x64"))
-                    {
-                        firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = true;
-                    }
-                    else
-                    {
-                        firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = false;
-                    }
+                    firefoxAlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox");
+                    firefoxStableX86AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Stable x86");
+                    firefoxStableX64AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Stable x64");
+                    firefoxBetaX86AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Beta x86");
+                    firefoxBetaX64AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Beta x64");
+                    firefoxDeveloperX86AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Dev x86");
+                    firefoxDeveloperX64AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Dev x64");
+                    firefoxNightlyX86AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Nightly x86");
+                    firefoxNightlyX64AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox Nightly x64");
+                    firefoxESRX86AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox ESR x86");
+                    firefoxESRX64AlsStandardbrowserToolStripMenuItem.Enabled = Directory.Exists($"{applicationPath}\\Firefox ESR x64");
                 }
             }
             catch (Exception)
